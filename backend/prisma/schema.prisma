@@ -3,12 +3,87 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//1105@Drcode
 
 generator client {
-  provider = "prisma-client-js"
+   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+   provider  = "postgresql"
+   url       = env("DATABASE_URL")
+   directUrl = env("DIRECT_URL")
+}
+
+model Produto {
+   id             String        @id @default(uuid())
+   nome           String        @unique
+   marca          String?
+   peso           String?
+   imagemUrl      String?
+   especificacoes String?
+   ordensCompra   OrdemCompra[] // Um produto pode estar associado a várias ordens de compra
+
+   @@map("produtos")
+}
+
+model OrdemCompra {
+   id               String   @id @default(uuid())
+   data             String
+   preco            Float
+   prazo            Int
+   qtdeCaixasPallet Int
+   qtdePallets      Int
+   entrega          String
+   observacoes      String?
+   status           String
+   produto          Produto  @relation(fields: [produtoId], references: [id])
+   produtoId        String
+   usuario          Usuario  @relation(fields: [usuarioId], references: [id])
+   usuarioId        String
+   pedidos          Pedido[] // Uma ordem de compra pode conter vários pedidos
+
+   @@map("ordens_compra")
+}
+
+model Usuario {
+   id            String         @id @default(uuid())
+   email         String         @unique
+   nome          String
+   cpf           String         @unique
+   senha         String
+   imagemUrl     String
+   perfil        String
+   status        String
+   ordensCompra  OrdemCompra[] // Um usuário pode cadastrar várias ordens de compra
+   supermercados Supermercado[]
+   pedidos       Pedido[]
+
+   @@map("usuarios")
+}
+
+model Supermercado {
+   id          String   @id @default(uuid())
+   razaoSocial String
+   cnpj        String
+   status      String
+   usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+   usuarioId   String
+   pedidos     Pedido[]
+
+   @@map("supermercados")
+}
+
+model Pedido {
+   id             String       @id @default(uuid())
+   ordemCompra    OrdemCompra  @relation(fields: [ordemCompraId], references: [id])
+   ordemCompraId  String
+   usuario        Usuario      @relation(fields: [usuarioId], references: [id])
+   usuarioId      String
+   supermercado   Supermercado @relation(fields: [supermercadoId], references: [id])
+   supermercadoId String // Relacionamento com Supermercado (1:N)
+   data           String
+   qtdeCaixas     Int
+
+   @@map("pedidos")
 }
