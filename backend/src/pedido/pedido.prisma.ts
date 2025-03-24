@@ -15,4 +15,11 @@ export class PedidoPrisma {
 			where: { id },
 		}) as any
 	}
+
+	async obterPedidosByOrdemCompra(id: string): Promise<Pedido[]> {
+		console.log("provider " + id)
+		return this.prisma.pedido.findMany({
+			where: { ordemCompraId: id },
+		})
+	}
 }

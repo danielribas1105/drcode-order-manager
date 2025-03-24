@@ -15,4 +15,10 @@ export class PedidoController {
 	async obterOrdemPorId(@Param("id") id: string): Promise<Pedido[] | null> {
 		return this.repo.obterPedidoPorId(id)
 	}
+
+	@Get("oc/:id")
+	async obterPedidosByOrdemCompra(@Param("id") id: string): Promise<Pedido[] | null> {
+		console.log("controller " + id)
+		return this.repo.obterPedidosByOrdemCompra(id)
+	}
 }
