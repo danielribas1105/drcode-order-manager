@@ -1,0 +1,12 @@
+{
+	"name": "drcode-order-manager",
+	"version": "1.0.0",
+	"description": "Web application to management purchase orders",
+	"main": "index.js",
+	"scripts": {
+		"dev": "npx concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
