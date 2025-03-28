@@ -1,5 +1,9 @@
-import Image from "next/image"
+import { SignupForm } from "@/components/ui/singup-form"
 
-export default function Home() {
-	return <div>Início</div>
+export default function Login() {
+	return (
+		<div>
+			<SignupForm />
+		</div>
+	)
 }
