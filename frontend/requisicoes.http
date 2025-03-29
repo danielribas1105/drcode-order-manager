@@ -1,0 +1,12 @@
+POST  http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+   "nome": "Anna Julia",
+   "email": "anna.julia@gmail.com",
+   "cpf": "111.222.333-44",
+   "imagemURL": "",
+   "senha": "annajulia@01",
+   "perfil": "Admin",
+   "status": "Ativo"
+}

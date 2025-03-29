@@ -1,12 +1,12 @@
-import Footer from "@/components/shared/footer"
-import Header from "@/components/shared/header"
+import Footer from "@/components/ui/footer"
+import Header from "@/components/ui/header"
 
-export default function Layout(props: { children: React.ReactNode }) {
-	return (
-		<div>
-			<Header />
-			{props.children}
-			<Footer />
-		</div>
-	)
+export default function PagesLayout({ children }: any) {
+   return (
+      <>
+         <Header />
+         {children}
+         <Footer />
+      </>
+   )
 }
