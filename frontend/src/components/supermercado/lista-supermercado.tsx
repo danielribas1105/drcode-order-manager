@@ -1,25 +1,19 @@
-'use client'
-import { Supermercado } from "@/core"
+import { Supermercado } from "@core"
 import CardSupermercado from "./card-supermercado"
 
 export interface ListaSupermercadosProps {
-   supermercados: Supermercado[]
-   selecionarSupermercado: (supermercado: Supermercado) => void
-   removerSupermercado: (supermercado: Supermercado) => void
+	supermercados: Supermercado[]
 }
 
 export default function ListaSupermercados(props: ListaSupermercadosProps) {
+	// Garantir que é um array antes de usar .map()
+	const supermercadosArray = Array.isArray(props.supermercados) ? props.supermercados : []
 
-   return (
-      <div className="flex flex-wrap justify-center gap-4">
-         {props.supermercados.map((supermercado: Supermercado) => (
-            <CardSupermercado
-               key={supermercado.id}
-               supermercado={supermercado}
-               selecionarSupermercado={() => props.selecionarSupermercado(supermercado)}
-               removerSupermercado={() => props.removerSupermercado(supermercado)}
-            />
-         ))}
-      </div>
-   )
+	return (
+		<div className="flex flex-wrap justify-center gap-4">
+			{supermercadosArray.map((supermercado: Supermercado) => (
+				<CardSupermercado key={supermercado.id} supermercado={supermercado} />
+			))}
+		</div>
+	)
 }

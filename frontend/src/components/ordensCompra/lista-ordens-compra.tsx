@@ -1,25 +1,19 @@
-'use client'
-import { OrdemCompra } from "@/core"
+import { OrdemCompra } from "@core"
 import CardOrdemCompra from "./card-ordem-compra"
 
 export interface ListaOrdensCompraProps {
-   ordensCompra: OrdemCompra[]
-   selecionarOrdemCompra: (ordemCompra: OrdemCompra) => void
-   removerOrdemCompra: (ordemCompra: OrdemCompra) => void
+	ordensCompra: OrdemCompra[]
 }
 
 export default function ListaOrdensCompra(props: ListaOrdensCompraProps) {
+	// Garantir que é um array antes de usar .map()
+	const ordensCompraArray = Array.isArray(props.ordensCompra) ? props.ordensCompra : []
 
-   return (
-      <div className="flex flex-wrap justify-center gap-4">
-         {props.ordensCompra.map((ordemCompra: OrdemCompra) => (
-            <CardOrdemCompra
-               key={ordemCompra.id}
-               ordemCompra={ordemCompra}
-               selecionarOrdemCompra={() => props.selecionarOrdemCompra(ordemCompra)}
-               removerOrdemCompra={() => props.removerOrdemCompra(ordemCompra)}
-            />
-         ))}
-      </div>
-   )
+	return ordensCompraArray ? (
+		<div className="flex flex-wrap justify-center gap-4">
+			{ordensCompraArray.map((ordemCompra: OrdemCompra) => (
+				<CardOrdemCompra key={ordemCompra.id} ordemCompra={ordemCompra} />
+			))}
+		</div>
+	) : null
 }
