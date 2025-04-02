@@ -1,5 +1,5 @@
 "use client"
-import { OrdemCompra, Pedido } from "@core"
+import { OrdemCompra } from "@core"
 import { IconChecklist, IconEdit, IconEyeCheck, IconTrash } from "@tabler/icons-react"
 
 export interface CardOrdemCompraProps {

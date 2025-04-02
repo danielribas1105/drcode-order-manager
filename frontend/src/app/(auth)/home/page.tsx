@@ -8,7 +8,7 @@ import {
 	IconShoppingCart,
 	IconUsers,
 } from "@tabler/icons-react"
-import { Usuario } from "@/core"
+import { Usuario } from "@core"
 import CardHome from "@/components/templates/card-home"
 import Container from "@/components/layout/container"
 
