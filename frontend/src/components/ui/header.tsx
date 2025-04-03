@@ -6,8 +6,8 @@ import logo from "@/../public/images/logo/logo-order-manager-370-95.png"
 
 export default function Header() {
 	return (
-		<header className="flex items-center p-1 bg-red-500">
-			<Container className="flex flex-1 justify-between items-center bg-emerald-500">
+		<header className="flex items-center p-1">
+			<Container className="flex flex-1 justify-between items-center">
 				<Link href={"/home"} className="flex gap-3 items-center">
 					<Image src={logo} alt={"Logo Order Manager"} width={200} height={200} />
 				</Link>

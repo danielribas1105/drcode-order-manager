@@ -1,10 +1,11 @@
 import Aside from "@/components/layout/aside"
+import Container from "@/components/layout/container"
 
 export default function HomeLayout({ children }: any) {
-   return (
-      <div className="container-box flex-col md:flex-row">
-         {children}
-         <Aside />
-      </div>
-   )
+	return (
+		<Container className="flex flex-col md:flex-row mt-4">
+			{children}
+			<Aside />
+		</Container>
+	)
 }

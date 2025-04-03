@@ -29,7 +29,7 @@ export default function Home() {
 			<h1 className="font-logo font-bold text-xl text-logo-black">
 				Bem-vindo {usuarioAtual?.nome || "..."}!
 			</h1>
-			<div className="flex flex-col md:flex-row md:flex-wrap gap-6">
+			<div className="flex flex-col md:flex-row md:flex-wrap gap-5">
 				{usuarioAtual ? (
 					<>
 						<CardHome
