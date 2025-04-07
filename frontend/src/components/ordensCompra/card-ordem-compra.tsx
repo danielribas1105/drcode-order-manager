@@ -1,4 +1,5 @@
 "use client"
+import { GerarDatas, Moeda } from "@/utils"
 import { OrdemCompra } from "@core"
 import { IconChecklist, IconEdit, IconEyeCheck, IconTrash } from "@tabler/icons-react"
 
@@ -12,7 +13,7 @@ export default function CardOrdemCompra(props: CardOrdemCompraProps) {
 	return (
 		<div className="flex flex-col w-auto h-auto bg-zinc-100 border-2 rounded-3xl p-2 text-zinc-800 hover:shadow-xl hover:shadow-logo-black/30">
 			<div className="flex flex-col gap-2 justify-start pb-2 border-b-2">
-				<div className="font-semibold text-lg text-center text-blue-800">{ordemCompra.id}</div>
+				<div className="font-semibold text-lg text-center text-blue-800">{ordemCompra.produtoId}</div>
 				<div className="flex justify-between items-center">
 					<div className="flex gap-2 text-sm italic text-zinc-400">
 						<span className="font-semibold">Nº:</span>
@@ -27,11 +28,11 @@ export default function CardOrdemCompra(props: CardOrdemCompraProps) {
 				<div className="flex justify-between gap-1">
 					<div className="flex gap-2">
 						<span>Preço:</span>
-						<span>R$ {ordemCompra.preco}</span>
+						<span>{Moeda.formatar(ordemCompra.preco)}</span>
 					</div>
 					<div className="flex gap-2">
 						<span>Data:</span>
-						<span>{ordemCompra.data}</span>
+						<span>{GerarDatas.ordenarData(ordemCompra.data)}</span>
 					</div>
 				</div>
 				<div className="flex gap-2">

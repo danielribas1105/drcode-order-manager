@@ -14,7 +14,7 @@ export default function CardUsuario(props: CardUsuarioProps) {
 		<div className="w-64 h-80 bg-zinc-100 border-2 rounded-3xl p-2 text-zinc-800 hover:shadow-xl hover:shadow-logo-black/30">
 			<div className="w-full h-24 relative bg-white">
 				<Image
-					src={usuario.imagemUrl ?? semImagem}
+					src={usuario.imagemUrl === "" ? semImagem : usuario.imagemUrl}
 					fill
 					className="object-contain"
 					alt={`Foto de perfil ${usuario.nome}`}
