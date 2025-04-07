@@ -30,60 +30,42 @@ export default function Home() {
 				Bem-vindo {usuarioAtual?.nome || "..."}!
 			</h1>
 			<div className="flex flex-col md:flex-row md:flex-wrap gap-5">
-				{usuarioAtual ? (
-					<>
-						<CardHome
-							link={"/ordensCompra"}
-							titulo={"ORDENS DE COMPRA"}
-							descricao={"Cadastrar e gerenciar as ordens de compras."}
-							icon={IconEdit}
-							usuario={usuarioAtual}
-						/>
-						<CardHome
-							link={"/pedidos"}
-							titulo={"PEDIDOS"}
-							descricao={"Acompanhar os pedidos realizados"}
-							icon={IconClipboardText}
-							usuario={usuarioAtual}
-						/>
-						<CardHome
-							link={"/relatorios"}
-							titulo={"RELATÓRIOS"}
-							descricao={"Módulo de relatórios"}
-							icon={IconFileAnalytics}
-							usuario={usuarioAtual}
-						/>
-						{usuarioAtual.perfil === "Admin" ? (
-							<>
-								<CardHome
-									link={"/produtos"}
-									titulo={"PRODUTOS"}
-									descricao={"Cadastrar, editar ou excluir produtos."}
-									icon={IconShoppingCart}
-									usuario={usuarioAtual}
-								/>
-								<CardHome
-									link={"/usuarios"}
-									titulo={"USUÁRIOS"}
-									descricao={"Cadastro de usuários."}
-									icon={IconUsers}
-									usuario={usuarioAtual}
-								/>
-								<CardHome
-									link={"/supermercado"}
-									titulo={"SUPERMERCADOS"}
-									descricao={"Supermercados cadastrados"}
-									icon={IconBuildingStore}
-									usuario={usuarioAtual}
-								/>
-							</>
-						) : (
-							<></>
-						)}
-					</>
-				) : (
-					<></>
-				)}
+				<CardHome
+					link={"/ordensCompra"}
+					titulo={"ORDENS DE COMPRA"}
+					descricao={"Cadastrar e gerenciar as ordens de compras."}
+					icon={IconEdit}
+				/>
+				<CardHome
+					link={"/pedidos"}
+					titulo={"PEDIDOS"}
+					descricao={"Acompanhar os pedidos realizados"}
+					icon={IconClipboardText}
+				/>
+				<CardHome
+					link={"/relatorios"}
+					titulo={"RELATÓRIOS"}
+					descricao={"Módulo de relatórios"}
+					icon={IconFileAnalytics}
+				/>
+				<CardHome
+					link={"/produtos"}
+					titulo={"PRODUTOS"}
+					descricao={"Cadastrar, editar ou excluir produtos."}
+					icon={IconShoppingCart}
+				/>
+				<CardHome
+					link={"/usuarios"}
+					titulo={"USUÁRIOS"}
+					descricao={"Cadastro de usuários."}
+					icon={IconUsers}
+				/>
+				<CardHome
+					link={"/supermercado"}
+					titulo={"SUPERMERCADOS"}
+					descricao={"Supermercados cadastrados"}
+					icon={IconBuildingStore}
+				/>
 			</div>
 		</Container>
 	)

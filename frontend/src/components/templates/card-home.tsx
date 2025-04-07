@@ -7,7 +7,7 @@ export interface CardProps {
 	link: string
 	titulo: string
 	descricao: string
-	usuario: Partial<Usuario>
+	usuario?: Partial<Usuario>
 	icon: ElementType
 }
 
