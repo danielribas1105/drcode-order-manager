@@ -1,6 +1,6 @@
-import { Pedido } from "@core"
 import { Injectable } from "@nestjs/common"
 import { PrismaProvider } from "src/db/prisma.provider"
+import { Pedido } from "@core"
 
 @Injectable()
 export class PedidoPrisma {
@@ -20,6 +20,25 @@ export class PedidoPrisma {
 		console.log("provider " + id)
 		return this.prisma.pedido.findMany({
 			where: { ordemCompraId: id },
+		})
+	}
+
+	async criarPedido(data: Omit<Pedido, "id">): Promise<Pedido> {
+		return this.prisma.pedido.create({
+			data,
+		})
+	}
+
+	async atualizarPedido(id: string, data: Partial<Pedido>): Promise<Pedido> {
+		return this.prisma.pedido.update({
+			where: { id },
+			data,
+		})
+	}
+
+	async excluirPedido(id: string): Promise<Pedido> {
+		return this.prisma.pedido.delete({
+			where: { id },
 		})
 	}
 }

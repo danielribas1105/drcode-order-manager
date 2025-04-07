@@ -15,4 +15,23 @@ export class OrdemCompraPrisma {
 			where: { id },
 		}) as any
 	}
+
+	async criarOrdemCompra(data: Omit<OrdemCompra, "id">): Promise<OrdemCompra> {
+		return this.prisma.ordemCompra.create({
+			data,
+		})
+	}
+
+	async atualizarOrdemCompra(id: string, data: Partial<OrdemCompra>): Promise<OrdemCompra> {
+		return this.prisma.ordemCompra.update({
+			where: { id },
+			data,
+		})
+	}
+
+	async excluirOrdemCompra(id: string): Promise<OrdemCompra> {
+		return this.prisma.ordemCompra.delete({
+			where: { id },
+		})
+	}
 }

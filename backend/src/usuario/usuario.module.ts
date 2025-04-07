@@ -4,8 +4,8 @@ import { UsuarioPrisma } from "./usuario.prisma"
 import { DbModule } from "src/db/db.module"
 
 @Module({
+	imports: [DbModule],
 	controllers: [UsuarioController],
 	providers: [UsuarioPrisma],
-	imports: [DbModule],
 })
 export class UsuarioModule {}

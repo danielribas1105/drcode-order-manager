@@ -15,4 +15,23 @@ export class UsuarioPrisma {
 			where: { id },
 		}) as any
 	}
+
+	async criarUsuario(data: Omit<Usuario, "id">): Promise<Usuario> {
+		return this.prisma.usuario.create({
+			data,
+		})
+	}
+
+	async atualizarUsuario(id: string, data: Partial<Usuario>): Promise<Usuario> {
+		return this.prisma.usuario.update({
+			where: { id },
+			data,
+		})
+	}
+
+	async excluirUsuario(id: string): Promise<Usuario> {
+		return this.prisma.usuario.delete({
+			where: { id },
+		})
+	}
 }

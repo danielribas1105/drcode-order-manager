@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common"
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { PedidoPrisma } from "./pedido.prisma"
 import { Pedido } from "@core"
 
@@ -20,5 +20,20 @@ export class PedidoController {
 	async obterPedidosByOrdemCompra(@Param("id") id: string): Promise<Pedido[] | null> {
 		console.log("controller " + id)
 		return this.repo.obterPedidosByOrdemCompra(id)
+	}
+
+	@Post()
+	async criar(@Body() data: Omit<Pedido, "id">) {
+		return this.repo.criarPedido(data)
+	}
+
+	@Put(":id")
+	async atualizar(@Param("id") id: string, @Body() data: Partial<Pedido>) {
+		return this.repo.atualizarPedido(id, data)
+	}
+
+	@Delete(":id")
+	async excluir(@Param("id") id: string) {
+		return this.repo.excluirPedido(id)
 	}
 }

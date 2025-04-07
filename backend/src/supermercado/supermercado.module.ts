@@ -4,8 +4,8 @@ import { SupermercadoPrisma } from "./supermercado.prisma"
 import { DbModule } from "src/db/db.module"
 
 @Module({
+	imports: [DbModule],
 	controllers: [SupermercadoController],
 	providers: [SupermercadoPrisma],
-	imports: [DbModule],
 })
 export class SupermercadoModule {}
