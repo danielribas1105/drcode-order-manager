@@ -46,10 +46,11 @@ export default function UsuariosPage() {
 		<Container className="flex-col">
 			<HeaderPage
 				titulo="Usuários Cadastrados"
-				textoBtn="Adicionar Usuário"
 				textofiltro={"Pesquisar usuário"}
+				textoBtn="Adicionar Usuário"
+				linkBtn="/usuarios/add"
 			/>
-			<ListaUsuarios usuarios={usuarios} />
+			<ListaUsuarios usuarios={usuarios} onExcluir={handleExcluir}/>
 		</Container>
 	)
 }
