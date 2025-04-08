@@ -46,8 +46,9 @@ export default function ProdutosPage() {
 		<Container className="flex-col">
 			<HeaderPage
 				titulo="Produtos Cadastrados"
-				textoBtn="Adicionar Produto"
 				textofiltro={"Pesquisar produto"}
+				textoBtn="Adicionar Produto"
+				linkBtn="/produtos/add"
 			/>
 			<ListaProdutos produtos={produtos} onExcluir={handleExcluir} />
 		</Container>

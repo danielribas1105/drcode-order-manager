@@ -90,7 +90,7 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 			</div>
 
 			<div className="mb-4">
-				<label htmlFor="descricao" className="block text-gray-700 font-medium mb-2">
+				<label htmlFor="marca" className="block text-gray-700 font-medium mb-2">
 					Marca
 				</label>
 				<input
@@ -106,7 +106,7 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
-					<label htmlFor="preco" className="block text-gray-700 font-medium mb-2">
+					<label htmlFor="peso" className="block text-gray-700 font-medium mb-2">
 						Peso
 					</label>
 					<input
@@ -122,13 +122,13 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 			</div>
 
 			<div className="mb-6">
-				<label htmlFor="categoria" className="block text-gray-700 font-medium mb-2">
+				<label htmlFor="especificacoes" className="block text-gray-700 font-medium mb-2">
 					Especificações
 				</label>
 				<input
 					type="text"
-					id="categoria"
-					name="categoria"
+					id="especificacoes"
+					name="especificacoes"
 					value={formState.especificacoes}
 					onChange={handleChange}
 					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

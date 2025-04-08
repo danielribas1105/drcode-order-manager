@@ -5,7 +5,7 @@ import { ReactNode } from "react"
 interface HeaderPageProps {
 	titulo: string
 	textoBtn?: string
-	linkBtn?: string
+	linkBtn: string
 	textofiltro?: string
 	children?: ReactNode
 }
@@ -13,7 +13,7 @@ interface HeaderPageProps {
 export default function HeaderPage({
 	titulo,
 	textoBtn,
-	linkBtn = "/produtos/add",
+	linkBtn,
 	textofiltro,
 	children,
 }: HeaderPageProps) {
