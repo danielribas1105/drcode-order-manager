@@ -49,7 +49,7 @@ export default function ProdutosPage() {
 				textoBtn="Adicionar Produto"
 				textofiltro={"Pesquisar produto"}
 			/>
-			<ListaProdutos produtos={produtos} />
+			<ListaProdutos produtos={produtos} onExcluir={handleExcluir} />
 		</Container>
 	)
 }
