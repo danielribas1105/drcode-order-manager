@@ -15,6 +15,7 @@ export default function Listausuarios({ usuarios, onExcluir }: ListaUsuariosProp
 						<th className="text-left py-3 px-4 font-semibold text-sm">Nome</th>
 						<th className="text-left py-3 px-4 font-semibold text-sm">E-mail</th>
 						<th className="text-left py-3 px-4 font-semibold text-sm">CPF</th>
+						<th className="text-left py-3 px-4 font-semibold text-sm">Perfil</th>
 						<th className="text-left py-3 px-4 font-semibold text-sm">Status</th>
 						<th className="text-left py-3 px-4 font-semibold text-sm">Ações</th>
 					</tr>
@@ -26,6 +27,7 @@ export default function Listausuarios({ usuarios, onExcluir }: ListaUsuariosProp
 								<td className="py-3 px-4">{usuario.nome}</td>
 								<td className="py-3 px-4">{usuario.email}</td>
 								<td className="py-3 px-4">{usuario.cpf}</td>
+								<td className="py-3 px-4">{usuario.perfil}</td>
 								<td className="py-3 px-4">{usuario.status}</td>
 								<td className="py-3 px-4 flex gap-2">
 									<Link

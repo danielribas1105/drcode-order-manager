@@ -1,4 +1,3 @@
-// src/app/produtos/novo/page.tsx
 "use client"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"

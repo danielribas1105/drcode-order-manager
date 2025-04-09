@@ -1,4 +1,3 @@
-// src/components/produtos/lista-produtos.tsx
 import { Produto } from "@core"
 import Link from "next/link"
 

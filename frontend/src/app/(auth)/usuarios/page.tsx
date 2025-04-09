@@ -4,12 +4,9 @@ import { Usuario } from "@core"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 import ListaUsuarios from "@/components/usuarios/lista-usuarios"
-import { obterUsuarios } from "@/functions/usuarios"
 import { usuarioService } from "@/services/usuariosService"
 
 export default function UsuariosPage() {
-	//const listaUsuarios = await obterUsuarios()
-
 	const [usuarios, setUsuarios] = useState<Usuario[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -50,7 +47,7 @@ export default function UsuariosPage() {
 				textoBtn="Adicionar Usuário"
 				linkBtn="/usuarios/add"
 			/>
-			<ListaUsuarios usuarios={usuarios} onExcluir={handleExcluir}/>
+			<ListaUsuarios usuarios={usuarios} onExcluir={handleExcluir} />
 		</Container>
 	)
 }

@@ -1,35 +1,35 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { Produto } from "@core"
-import { produtoService } from "@/services/produtosService"
+import { Supermercado } from "@core"
+import { supermercadoService } from "@/services/supermercadosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
-import ProdutoForm from "@/components/produtos/form-produto"
+import SupermercadoForm from "@/components/supermercado/form-supermercado"
 
-export default function EditarProdutoPage() {
+export default function EditarSupermercadoPage() {
 	const params = useParams()
-	const [produto, setProduto] = useState<Produto | null>(null)
+	const [supermercado, setSupermercado] = useState<Supermercado | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
 
 	const id = Array.isArray(params.id) ? params.id[0] : params.id
 
 	useEffect(() => {
-		async function carregarProduto(id: string) {
+		async function carregarSupermercado(id: string) {
 			try {
-				const data = await produtoService.obterPorId(id)
-				setProduto(data)
+				const data = await supermercadoService.obterPorId(id)
+				setSupermercado(data)
 			} catch (error) {
-				console.error("Erro ao carregar produto:", error)
-				setError("Não foi possível carregar os dados do produto.")
+				console.error("Erro ao carregar supermercado:", error)
+				setError("Não foi possível carregar os dados do supermercado.")
 			} finally {
 				setLoading(false)
 			}
 		}
 
 		if (id) {
-			carregarProduto(id)
+			carregarSupermercado(id)
 		}
 	}, [id])
 
@@ -40,21 +40,21 @@ export default function EditarProdutoPage() {
 				<div className="text-red-600">{error}</div>
 			</Container>
 		)
-	if (!produto)
+	if (!supermercado)
 		return (
 			<Container>
-				<div>Produto não encontrado</div>
+				<div>Supermercado não encontrado</div>
 			</Container>
 		)
 
 	return (
 		<Container className="flex-col">
 			<HeaderPage
-				titulo={`Editar Produto: ${produto.nome}`}
+				titulo={`Editar Supermercado: ${supermercado.razaoSocial}`}
 				textoBtn="Voltar para Lista"
-				linkBtn="/produtos"
+				linkBtn="/supermercados"
 			/>
-			<ProdutoForm produto={produto} isEditing={true} />
+			<SupermercadoForm supermercado={supermercado} isEditing={true} />
 		</Container>
 	)
 }

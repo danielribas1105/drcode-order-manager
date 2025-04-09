@@ -2,14 +2,11 @@
 import { useEffect, useState } from "react"
 import { Supermercado } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
-import { obterSupermercados } from "@/functions/supermercados"
 import Container from "@/components/layout/container"
 import ListaSupermercados from "@/components/supermercado/lista-supermercado"
 import HeaderPage from "@/components/templates/header-page"
 
 export default function SupermercadosPage() {
-	//const listaSupermercados = await obterSupermercados()
-
 	const [supermercados, setSupermercados] = useState<Supermercado[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -45,11 +42,12 @@ export default function SupermercadosPage() {
 	return (
 		<Container className="flex-col">
 			<HeaderPage
-				titulo="Supermercados Cadastradas"
-				textoBtn="Adicionar Supermercado"
+				titulo="Supermercados Cadastrados"
 				textofiltro={"Pesquisar Supermercado"}
+				textoBtn="Adicionar Supermercado"
+				linkBtn="/supermercados/add"
 			/>
-			<ListaSupermercados supermercados={supermercados} />
+			<ListaSupermercados supermercados={supermercados} onExcluir={handleExcluir} />
 		</Container>
 	)
 }

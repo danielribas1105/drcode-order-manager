@@ -20,7 +20,7 @@ export default function UsuarioForm({ usuario, isEditing = false }: UsuarioFormP
 		perfil: "",
 		status: "",
 		imagemUrl: "",
-		senha:""
+		senha: "",
 	})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState("")
@@ -35,12 +35,14 @@ export default function UsuarioForm({ usuario, isEditing = false }: UsuarioFormP
 				perfil: usuario.perfil || "",
 				status: usuario.status || "",
 				imagemUrl: usuario.imagemUrl || "",
-				senha: usuario.senha
+				senha: usuario.senha,
 			})
 		}
 	}, [usuario])
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+	) => {
 		const { name, value } = e.target
 		setFormState((prev) => ({
 			...prev,
@@ -128,45 +130,40 @@ export default function UsuarioForm({ usuario, isEditing = false }: UsuarioFormP
 				<label htmlFor="perfil" className="block text-gray-700 font-medium mb-2">
 					Perfil
 				</label>
-				<select className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-					id="perfil" name="perfil"
-					defaultValue={formState.perfil ?? ""}
-					onChange={(e) => handleChange}>
-					<option value="" disabled hidden>Selecione uma opção</option>
+				<select
+					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
+					id="perfil"
+					name="perfil"
+					defaultValue={formState.perfil}
+					onChange={handleChange}
+				>
+					<option value="" disabled hidden>
+						Selecione uma opção
+					</option>
 					<option value="Admin">Admin</option>
 					<option value="Comprador">Comprador</option>
 					<option value="Operacional">Operacional</option>
-                </select>
-				{/* <input
-					type="text"
-					id="perfil"
-					name="perfil"
-					value={formState.perfil}
-					onChange={handleChange}
-					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-				/> */}
+				</select>
 			</div>
 
 			<div className="mb-6">
 				<label htmlFor="status" className="block text-gray-700 font-medium mb-2">
 					Status
 				</label>
-				<select className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-					defaultValue={formState.status ?? ""}
-					onChange={(e) => handleChange}>
-					<option value="" disabled hidden>Selecione uma opção</option>
+				<select
+					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
+					id="status"
+					name="status"
+					defaultValue={formState.status}
+					onChange={handleChange}
+				>
+					<option value="" disabled hidden>
+						Selecione uma opção
+					</option>
 					<option value="Ativo">Ativo</option>
 					<option value="Bloqueado">Bloqueado</option>
 					<option value="Cancelado">Cancelado</option>
 				</select>
-				{/* <input
-					type="text"
-					id="status"
-					name="status"
-					value={formState.status}
-					onChange={handleChange}
-					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-				/> */}
 			</div>
 
 			<div className="flex justify-end gap-4">
