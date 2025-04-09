@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import { Supermercado } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
 import Container from "@/components/layout/container"
-import ListaSupermercados from "@/components/supermercado/lista-supermercado"
+import TabelaSupermercados from "@/components/supermercados/tabela-supermercados"
 import HeaderPage from "@/components/templates/header-page"
+import ListaSupermercados from "@/components/supermercados/lista-supermercados"
 
 export default function SupermercadosPage() {
 	const [supermercados, setSupermercados] = useState<Supermercado[]>([])
@@ -47,7 +48,8 @@ export default function SupermercadosPage() {
 				textoBtn="Adicionar Supermercado"
 				linkBtn="/supermercados/add"
 			/>
-			<ListaSupermercados supermercados={supermercados} onExcluir={handleExcluir} />
+			{/* <TabelaSupermercados supermercados={supermercados} onExcluir={handleExcluir} /> */}
+			<ListaSupermercados supermercados={supermercados} onExcluir={handleExcluir}/>
 		</Container>
 	)
 }

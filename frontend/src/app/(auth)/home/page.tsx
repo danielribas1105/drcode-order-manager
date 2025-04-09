@@ -61,7 +61,7 @@ export default function Home() {
 					icon={IconUsers}
 				/>
 				<CardHome
-					link={"/supermercado"}
+					link={"/supermercados"}
 					titulo={"SUPERMERCADOS"}
 					descricao={"Supermercados cadastrados"}
 					icon={IconBuildingStore}

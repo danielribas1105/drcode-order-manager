@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { Supermercado } from "@core"
 
-export interface ListaSupermercadosProps {
+export interface TabelaSupermercadosProps {
 	supermercados: Supermercado[]
 	onExcluir?: (id: string) => void
 }
 
-export default function ListaSupermercados({ supermercados, onExcluir }: ListaSupermercadosProps) {
+export default function TabelaSupermercados({ supermercados, onExcluir }: TabelaSupermercadosProps) {
 	return (
 		<div className="w-full overflow-x-auto">
 			<table className="min-w-full bg-white rounded-lg overflow-hidden">

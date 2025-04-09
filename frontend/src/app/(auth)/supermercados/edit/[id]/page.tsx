@@ -5,7 +5,7 @@ import { Supermercado } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
-import SupermercadoForm from "@/components/supermercado/form-supermercado"
+import SupermercadoForm from "@/components/supermercados/form-supermercado"
 
 export default function EditarSupermercadoPage() {
 	const params = useParams()

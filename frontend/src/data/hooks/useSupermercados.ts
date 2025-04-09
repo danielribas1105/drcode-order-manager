@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { Supermercado } from "@/core"
-import listaSupermercados from "@/data/constants/supermercados"
+import TabelaSupermercados from "@/data/constants/supermercados"
 
 export default function useSupermercado() {
 
-   const [supermercados, setSupermercados] = useState<Supermercado[]>(listaSupermercados)
+   const [supermercados, setSupermercados] = useState<Supermercado[]>(TabelaSupermercados)
 
    return {
       supermercados
