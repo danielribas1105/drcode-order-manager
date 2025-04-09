@@ -1,9 +1,10 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Supermercado } from "@core"
+import { Supermercado, Usuario } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
 import { GerarIds } from "@/utils"
+import { usuarioService } from "@/services/usuariosService"
 
 export interface SupermercadoFormProps {
 	supermercado?: Partial<Supermercado>
@@ -11,6 +12,7 @@ export interface SupermercadoFormProps {
 }
 
 export default function SupermercadoForm({ supermercado, isEditing = false }: SupermercadoFormProps) {
+	const [usuarios, setUsuarios] = useState<Usuario[]>([])
 	const router = useRouter()
 	const [formState, setFormState] = useState({
 		id: GerarIds.newId(),
@@ -23,6 +25,17 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 	const [error, setError] = useState("")
 
 	useEffect(() => {
+
+		async function carregarUsuarios() {
+			try {
+				const data = await usuarioService.obterTodos()
+				setUsuarios(data)
+			} catch (error) {
+				console.error("Erro ao carregar usuários:", error)
+			}
+		}
+		carregarUsuarios()
+		
 		if (supermercado) {
 			setFormState({
 				id: supermercado.id,
@@ -108,7 +121,22 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 					<label htmlFor="comprador" className="block text-gray-700 font-medium mb-2">
 						Comprador
 					</label>
-					<input
+					<select
+						id="comprador"
+						name="comprador"
+						value={formState.usuarioId}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					>
+						<option value="" disabled>Selecione um comprador</option>
+						{usuarios.map(usuario => (
+							<option key={usuario.id} value={usuario.id}>
+								{usuario.nome}
+							</option>
+						))}
+					</select>
+					{/* <input
 						type="text"
 						id="comprador"
 						name="comprador"
@@ -116,7 +144,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 						onChange={handleChange}
 						required
 						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-					/>
+					/> */}
 				</div>
 			</div>
 

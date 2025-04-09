@@ -13,7 +13,7 @@ export default function ListaSupermercados({ supermercados, onExcluir }: ListaSu
         <ul className="flex flex-col gap-2">
             {supermercados.length > 0 ? (
                         supermercados.map((supermercado) => (
-                            <li key={supermercado.id} className="flex flex-col md:flex-row md:justify-between p-2 border-2 border-zinc-200 rounded-lg hover:bg-gray-50">
+                            <li key={supermercado.id} className="flex flex-col md:flex-row items-center md:justify-between p-2 border-2 border-zinc-200 rounded-lg hover:bg-gray-50">
                                 <div>
                                     <span className="font-bold text-lg py-3 px-4">{supermercado.razaoSocial}</span>
                                     <div className="text-base text-zinc-400">
