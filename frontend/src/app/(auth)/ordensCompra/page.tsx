@@ -1,5 +1,4 @@
 "use client"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { OrdemCompra } from "@core"
 import { ordemCompraService } from "@/services/ordensCompraService"
@@ -16,7 +15,6 @@ export default function OrdensCompraPage() {
 			console.log("carregarOrdensCompra")
 			try {
 				const data = await ordemCompraService.obterTodas()
-				console.log("data " + data)
 				setOrdensCompra(data)
 			} catch (error) {
 				console.error("Erro ao carregar ordens de compra:", error)
@@ -81,8 +79,9 @@ export default function OrdensCompraPage() {
 			<Container className="flex-col">
 				<HeaderPage
 					titulo="OCs Cadastradas"
-					textoBtn="Adicionar OC"
 					textofiltro={"Pesquisar Ordem Compra"}
+					textoBtn="Adicionar OC"
+					linkBtn="/ordens_compra/add"
 				/>
 				<ListaOrdensCompra ordensCompra={ordensCompra} />
 			</Container>
