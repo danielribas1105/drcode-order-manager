@@ -10,13 +10,7 @@ interface HeaderPageProps {
 	children?: ReactNode
 }
 
-export default function HeaderPage({
-	titulo,
-	textoBtn,
-	linkBtn,
-	textofiltro,
-	children,
-}: HeaderPageProps) {
+export default function HeaderPage({ titulo, textoBtn, linkBtn, textofiltro, children }: HeaderPageProps) {
 	return (
 		<div className="w-full flex flex-col lg:flex-row justify-between items-center gap-4 mb-6">
 			<h1 className="text-2xl font-bold">{titulo}</h1>
@@ -52,6 +46,9 @@ export default function HeaderPage({
 						{textoBtn}
 					</Link>
 				)}
+				<Link href="/home" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+					Voltar
+				</Link>
 				{children}
 			</div>
 		</div>

@@ -2,25 +2,25 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Usuario } from "@core"
-import { usuarioService } from "@/services/usuariosService"
+import { Pedido } from "@core"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
+import { pedidoService } from "@/services/pedidosService"
 
-export default function DetalheUsuarioPage() {
+export default function DetalhePedidoPage() {
 	const params = useParams()
 	const router = useRouter()
-	const [usuario, setUsuario] = useState<Usuario | null>(null)
+	const [pedido, setPedido] = useState<Pedido | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
 
 	const id = Array.isArray(params.id) ? params.id[0] : params.id
 
 	useEffect(() => {
-		async function carregarUsuario(id: string) {
+		async function carregarPedido(id: string) {
 			try {
-				const data = await usuarioService.obterPorId(id)
-				setUsuario(data)
+				const data = await pedidoService.obterPorId(id)
+				setPedido(data)
 			} catch (error) {
 				console.error("Erro ao carregar usuário:", error)
 				setError("Não foi possível carregar os detalhes do usuário.")
@@ -30,20 +30,20 @@ export default function DetalheUsuarioPage() {
 		}
 
 		if (id) {
-			carregarUsuario(id)
+			carregarPedido(id)
 		}
 	}, [id])
 
 	const handleExcluir = async () => {
-		if (!usuario) return
+		if (!pedido) return
 
-		if (confirm("Tem certeza que deseja excluir este usuário?")) {
+		if (confirm("Tem certeza que deseja excluir este pedido?")) {
 			try {
-				await usuarioService.excluir(usuario.id)
-				router.push("/usuarios")
+				await pedidoService.excluir(pedido.id)
+				router.push("/pedidos")
 			} catch (error) {
-				console.error("Erro ao excluir usuário:", error)
-				setError("Não foi possível excluir o usuário.")
+				console.error("Erro ao excluir pedido:", error)
+				setError("Não foi possível excluir o pedido.")
 			}
 		}
 	}
@@ -55,7 +55,7 @@ export default function DetalheUsuarioPage() {
 				<div className="text-red-600">{error}</div>
 			</Container>
 		)
-	if (!usuario)
+	if (!pedido)
 		return (
 			<Container>
 				<div>Usuário não encontrado</div>
@@ -64,9 +64,9 @@ export default function DetalheUsuarioPage() {
 
 	return (
 		<Container className="flex-col">
-			<HeaderPage titulo="Detalhes do Usuário" textoBtn="Voltar para Lista" linkBtn="/usuarios">
+			<HeaderPage titulo="Detalhes do Pedido" textoBtn="Voltar para Lista" linkBtn="/pedidos">
 				<Link
-					href={`/usuarios/edit/${usuario.id}`}
+					href={`/pedidos/edit/${pedido.id}`}
 					className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
 					Editar
@@ -82,23 +82,23 @@ export default function DetalheUsuarioPage() {
 			<div className="bg-white shadow rounded-lg p-6">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div>
-						<h3 className="text-gray-500 font-medium">Nome</h3>
-						<p className="text-lg">{usuario.nome}</p>
+						<h3 className="text-gray-500 font-medium">Ordem Compra</h3>
+						<p className="text-lg">{pedido.ordemCompraId}</p>
 					</div>
 
 					<div>
-						<h3 className="text-gray-500 font-medium">E-mail</h3>
-						<p className="text-lg">{usuario.email}</p>
+						<h3 className="text-gray-500 font-medium">Quant Caixas</h3>
+						<p className="text-lg">{pedido.qtdeCaixas}</p>
 					</div>
 
 					<div>
-						<h3 className="text-gray-500 font-medium">CPF</h3>
-						<p className="text-lg font-medium text-green-600">{usuario.cpf}</p>
+						<h3 className="text-gray-500 font-medium">Supermercado</h3>
+						<p className="text-lg font-medium text-green-600">{pedido.supermercadoId}</p>
 					</div>
 
 					<div className="md:col-span-2">
-						<h3 className="text-gray-500 font-medium">Status</h3>
-						<p className="text-lg">{usuario.status}</p>
+						<h3 className="text-gray-500 font-medium">Comprador</h3>
+						<p className="text-lg">{pedido.usuarioId}</p>
 					</div>
 				</div>
 			</div>

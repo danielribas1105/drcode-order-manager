@@ -1,130 +1,187 @@
-import { Pedido } from "@core"
-import { IconPlus } from "@tabler/icons-react"
-import { GerarDatas } from "@/utils"
-import Container from "@/components/layout/container"
-import FiltroProduto from "@/components/produtos/filtro-produto"
-import BtnsSaveCancel from "@/components/templates/btns-save-cancel"
-import listaCompradores from "@/data/constants/usuarios"
+"use client"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { Pedido, Usuario } from "@core"
+import { usuarioService } from "@/services/usuariosService"
+import { GerarIds } from "@/utils"
 
-export interface FormPedidoProps {
-	pedido: Partial<Pedido>
-	titleForm: string
-	alteraPedido: (pedido: Partial<Pedido>) => void
-	salvar: () => void
-	cancelar: () => void
+export interface PedidoFormProps {
+	pedido?: Pedido
+	isEditing?: boolean
 }
 
-export default function FormPedido(props: FormPedidoProps) {
-	const { pedido, titleForm, alteraPedido, salvar, cancelar } = props
+export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProps) {
+	const router = useRouter()
+	const [formState, setFormState] = useState({
+		id: GerarIds.newId(),
+		nome: "",
+		email: "",
+		cpf: "",
+		perfil: "",
+		status: "",
+		imagemUrl: "",
+		senha: "",
+	})
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [error, setError] = useState("")
 
-	function selecionarComprador(id: string): string {
-		let comprador = ""
-		listaCompradores.forEach((c) => {
-			if (c.id === id) {
-				comprador = c.nome
+	useEffect(() => {
+		if (usuario) {
+			setFormState({
+				id: usuario.id,
+				nome: usuario.nome,
+				email: usuario.email || "",
+				cpf: usuario.cpf || "",
+				perfil: usuario.perfil || "",
+				status: usuario.status || "",
+				imagemUrl: usuario.imagemUrl || "",
+				senha: usuario.senha,
+			})
+		}
+	}, [usuario])
+
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+	) => {
+		const { name, value } = e.target
+		setFormState((prev) => ({
+			...prev,
+			[name]: name === "preco" || name === "estoque" ? Number(value) : value,
+		}))
+	}
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		setIsSubmitting(true)
+		setError("")
+
+		try {
+			if (isEditing && usuario) {
+				await usuarioService.atualizar(usuario.id, formState)
+			} else {
+				await usuarioService.criar(formState)
 			}
-		})
-		return comprador
+			router.push("/usuarios")
+			router.refresh()
+		} catch (error) {
+			console.error("Erro ao salvar usuário:", error)
+			setError("Ocorreu um erro ao salvar o usuário. Tente novamente.")
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	return (
-		<Container className="flex-col">
-			<div className="flex flex-col justify-between md:flex-row gap-4 items-center mb-4">
-				<h2 className="title-page-default">{titleForm}</h2>
-				<FiltroProduto placeholder={"Buscar produto"} />
-				<button
-					className="flex justify-center items-center gap-1 px-2 py-1 font-logo text-lg text-logo-white bg-orange-400 hover:bg-orange-600 border-2 rounded-md"
-					onClick={(e) => {
-						e.preventDefault()
-						console.log("Add pedido")
-						/* adicionarItem(props.produto) */
-					}}
-				>
-					<IconPlus size={20} />
-					<span>Adicionar Produto</span>
-				</button>
+		<form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
+			{error && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					{error}
+				</div>
+			)}
+
+			<div className="mb-4">
+				<label htmlFor="nome" className="block text-gray-700 font-medium mb-2">
+					Nome *
+				</label>
+				<input
+					type="text"
+					id="nome"
+					name="nome"
+					value={formState.nome}
+					onChange={handleChange}
+					required
+					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
 			</div>
-			<div className="flex flex-1 gap-4 mb-6">
-				<div className="flex flex-1 flex-col font-texto">
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Nome do produto:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Nome do produto"
-								onChange={(e) => alteraPedido({ ...pedido, ordemCompraId: e.target.value })}
-								value={pedido.ordemCompraId ?? ""}
-							/>
-						</div>
-						<div className="flex flex-col">
-							<span>Código do Pedido:</span>
-							<input
-								className="text-xl text-zinc-400 p-2 rounded-md border-2 outline-none read-only:bg-gray-100"
-								readOnly
-								value={pedido.id ?? ""}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Comprador:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Nome do comprador"
-								value={selecionarComprador(pedido.usuarioId ?? "")}
-							/>
-						</div>
-						<div className="flex flex-1 flex-col">
-							<span>Data:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="E-mail mais utilizado"
-								onChange={(e) => alteraPedido({ ...pedido, data: e.target.value })}
-								value={pedido.data ?? GerarDatas.dataHoraMinuto()}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Selecionar Supermercado:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Quantidade de caixas por pallet"
-								onChange={(e) => alteraPedido({ ...pedido, supermercadoId: e.target.value })}
-								value={pedido.supermercadoId ?? ""}
-							/>
-						</div>
-						<div className="flex flex-1 gap-2 items-center">
-							<div className="flex flex-1 flex-col">
-								<span>Quantidade de caixas:</span>
-								<input
-									className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-									placeholder="Total de pallets"
-									onChange={(e) => alteraPedido({ ...pedido, qtdeCaixas: +e.target.value })}
-									value={pedido.qtdeCaixas ?? ""}
-								/>
-							</div>
-							<div>
-								<button
-									className="flex justify-center items-center gap-1 px-2 py-1 font-logo text-xl text-logo-white bg-blue-400 hover:bg-blue-600 border-2 rounded-md"
-									onClick={(e) => {
-										e.preventDefault()
-										console.log("Add caixas")
-										/* adicionarItem(props.produto) */
-									}}
-								>
-									<IconPlus size={30} />
-									<span>Adicionar</span>
-								</button>
-							</div>
-						</div>
-					</div>
-					<div className="flex flex-1">Tabela com as caixas por supermercado</div>
+
+			<div className="mb-4">
+				<label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+					E-mail
+				</label>
+				<input
+					type="text"
+					id="email"
+					name="email"
+					value={formState.email}
+					onChange={handleChange}
+					required
+					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="cpf" className="block text-gray-700 font-medium mb-2">
+						CPF
+					</label>
+					<input
+						type="text"
+						id="cpf"
+						name="cpf"
+						value={formState.cpf}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
 				</div>
 			</div>
-			<div className="flex flex-1 justify-end">
-				<BtnsSaveCancel salvar={salvar} cancelar={cancelar} />
+
+			<div className="mb-6">
+				<label htmlFor="perfil" className="block text-gray-700 font-medium mb-2">
+					Perfil
+				</label>
+				<select
+					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
+					id="perfil"
+					name="perfil"
+					defaultValue={formState.perfil}
+					onChange={handleChange}
+				>
+					<option value="" disabled hidden>
+						Selecione uma opção
+					</option>
+					<option value="Admin">Admin</option>
+					<option value="Comprador">Comprador</option>
+					<option value="Operacional">Operacional</option>
+				</select>
 			</div>
-		</Container>
+
+			<div className="mb-6">
+				<label htmlFor="status" className="block text-gray-700 font-medium mb-2">
+					Status
+				</label>
+				<select
+					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
+					id="status"
+					name="status"
+					defaultValue={formState.status}
+					onChange={handleChange}
+				>
+					<option value="" disabled hidden>
+						Selecione uma opção
+					</option>
+					<option value="Ativo">Ativo</option>
+					<option value="Bloqueado">Bloqueado</option>
+					<option value="Cancelado">Cancelado</option>
+				</select>
+			</div>
+
+			<div className="flex justify-end gap-4">
+				<button
+					type="button"
+					onClick={() => router.back()}
+					className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+				>
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+				>
+					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
+				</button>
+			</div>
+		</form>
 	)
 }
