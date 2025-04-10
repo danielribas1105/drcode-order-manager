@@ -1,6 +1,4 @@
 import { Produto } from "@core"
-import { IconCancel, IconEye, IconPencil } from "@tabler/icons-react"
-import Link from "next/link"
 import BtnsGroup from "../templates/btns-group"
 
 export interface ListaProdutosProps {
@@ -22,31 +20,6 @@ export default function ListaProdutos({ produtos, onExcluir }: ListaProdutosProp
                                     </div>
                                 </div>
 								<BtnsGroup href="produtos" objetoId={produto.id} onExcluir={onExcluir}/>
-								{/* <div className="py-3 px-4 flex items-center gap-3">
-									<Link
-										href={`/produtos/${produto.id}`}
-										className="flex gap-2 text-blue-600 hover:text-blue-800 py-1 px-3 border-2 border-blue-600 rounded-md"
-									>
-										<IconEye/>
-										Ver
-									</Link>
-									<Link
-										href={`/produtos/edit/${produto.id}`}
-										className="flex gap-2 text-green-600 hover:text-green-800 py-1 px-3 border-2 border-green-600 rounded-md"
-									>
-										<IconPencil/>
-										Editar
-									</Link>
-									{onExcluir && (
-										<button
-											onClick={() => onExcluir(produto.id)}
-											className="flex gap-2 text-red-600 hover:text-red-800 py-1 px-3 border-2 border-red-600 rounded-md"
-										>
-											<IconCancel/>
-											Excluir
-										</button>
-									)}
-								</div> */}
 							</li>
 						))
 					) : (
@@ -55,6 +28,5 @@ export default function ListaProdutos({ produtos, onExcluir }: ListaProdutosProp
                         </span>
 					)}
         </ul>
-
     )
 }

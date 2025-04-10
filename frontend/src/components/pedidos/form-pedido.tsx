@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Pedido, Usuario } from "@core"
-import { usuarioService } from "@/services/usuariosService"
+import { Pedido } from "@core"
 import { GerarIds } from "@/utils"
+import { pedidoService } from "@/services/pedidosService"
 
 export interface PedidoFormProps {
 	pedido?: Pedido
@@ -14,31 +14,27 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 	const router = useRouter()
 	const [formState, setFormState] = useState({
 		id: GerarIds.newId(),
-		nome: "",
-		email: "",
-		cpf: "",
-		perfil: "",
-		status: "",
-		imagemUrl: "",
-		senha: "",
+		ordemCompraId: "",
+		usuarioId: "",
+		supermercadoId: "",
+		data: "",
+		qtdeCaixas: 0
 	})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState("")
 
 	useEffect(() => {
-		if (usuario) {
+		if (pedido) {
 			setFormState({
-				id: usuario.id,
-				nome: usuario.nome,
-				email: usuario.email || "",
-				cpf: usuario.cpf || "",
-				perfil: usuario.perfil || "",
-				status: usuario.status || "",
-				imagemUrl: usuario.imagemUrl || "",
-				senha: usuario.senha,
+				id: pedido.id,
+				ordemCompraId: pedido.ordemCompraId || "",
+				usuarioId: pedido.usuarioId || "",
+				supermercadoId: pedido.supermercadoId || "",
+				data: pedido.data || "",
+				qtdeCaixas: pedido.qtdeCaixas || 0
 			})
 		}
-	}, [usuario])
+	}, [pedido])
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -56,16 +52,16 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 		setError("")
 
 		try {
-			if (isEditing && usuario) {
-				await usuarioService.atualizar(usuario.id, formState)
+			if (isEditing && pedido) {
+				await pedidoService.atualizar(pedido.id, formState)
 			} else {
-				await usuarioService.criar(formState)
+				await pedidoService.criar(formState)
 			}
-			router.push("/usuarios")
+			router.push("/pedidos")
 			router.refresh()
 		} catch (error) {
-			console.error("Erro ao salvar usuário:", error)
-			setError("Ocorreu um erro ao salvar o usuário. Tente novamente.")
+			console.error("Erro ao salvar pedido:", error)
+			setError("Ocorreu um erro ao salvar o pedido. Tente novamente.")
 		} finally {
 			setIsSubmitting(false)
 		}
@@ -81,13 +77,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 
 			<div className="mb-4">
 				<label htmlFor="nome" className="block text-gray-700 font-medium mb-2">
-					Nome *
+					Ordem Compra *
 				</label>
 				<input
 					type="text"
 					id="nome"
 					name="nome"
-					value={formState.nome}
+					value={formState.ordemCompraId}
 					onChange={handleChange}
 					required
 					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -96,13 +92,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 
 			<div className="mb-4">
 				<label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-					E-mail
+					Supermercado
 				</label>
 				<input
 					type="text"
 					id="email"
 					name="email"
-					value={formState.email}
+					value={formState.supermercadoId}
 					onChange={handleChange}
 					required
 					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -112,13 +108,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
 					<label htmlFor="cpf" className="block text-gray-700 font-medium mb-2">
-						CPF
+						Comprador
 					</label>
 					<input
 						type="text"
 						id="cpf"
 						name="cpf"
-						value={formState.cpf}
+						value={formState.usuarioId}
 						onChange={handleChange}
 						required
 						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -126,44 +122,21 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 				</div>
 			</div>
 
-			<div className="mb-6">
-				<label htmlFor="perfil" className="block text-gray-700 font-medium mb-2">
-					Perfil
-				</label>
-				<select
-					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-					id="perfil"
-					name="perfil"
-					defaultValue={formState.perfil}
-					onChange={handleChange}
-				>
-					<option value="" disabled hidden>
-						Selecione uma opção
-					</option>
-					<option value="Admin">Admin</option>
-					<option value="Comprador">Comprador</option>
-					<option value="Operacional">Operacional</option>
-				</select>
-			</div>
-
-			<div className="mb-6">
-				<label htmlFor="status" className="block text-gray-700 font-medium mb-2">
-					Status
-				</label>
-				<select
-					className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-					id="status"
-					name="status"
-					defaultValue={formState.status}
-					onChange={handleChange}
-				>
-					<option value="" disabled hidden>
-						Selecione uma opção
-					</option>
-					<option value="Ativo">Ativo</option>
-					<option value="Bloqueado">Bloqueado</option>
-					<option value="Cancelado">Cancelado</option>
-				</select>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="cpf" className="block text-gray-700 font-medium mb-2">
+						Data
+					</label>
+					<input
+						type="text"
+						id="cpf"
+						name="cpf"
+						value={formState.data}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
 			</div>
 
 			<div className="flex justify-end gap-4">

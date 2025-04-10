@@ -2,13 +2,11 @@
 import { useEffect, useState } from "react"
 import { Pedido } from "@core"
 import { pedidoService } from "@/services/pedidosService"
-import { obterPedidos } from "@/functions/pedidos"
 import Container from "@/components/layout/container"
 import ListaPedidos from "@/components/pedidos/lista-pedidos"
 import HeaderPage from "@/components/templates/header-page"
 
 export default function PedidosPage() {
-	//const listaPedidos = await obterPedidos()
 
 	const [pedidos, setPedidos] = useState<Pedido[]>([])
 	const [loading, setLoading] = useState(true)
@@ -46,8 +44,9 @@ export default function PedidosPage() {
 		<Container className="flex-col">
 			<HeaderPage
 				titulo="Pedidos Cadastradas"
-				textoBtn="Adicionar Pedido"
 				textofiltro={"Pesquisar Pedidos"}
+				textoBtn="Adicionar Pedido"
+				linkBtn="/pedidos/add"
 			/>
 			<ListaPedidos pedidos={pedidos} />
 		</Container>

@@ -43,7 +43,7 @@ export default function EditarPedidoPage() {
 	if (!pedido)
 		return (
 			<Container>
-				<div>Usuário não encontrado</div>
+				<div>Pedido não encontrado</div>
 			</Container>
 		)
 
