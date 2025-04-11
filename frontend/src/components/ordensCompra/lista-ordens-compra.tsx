@@ -1,40 +1,23 @@
+import { useState } from "react"
 import { OrdemCompra, Produto } from "@core"
 import BtnsGroup from "../templates/btns-group"
-import { useEffect, useState } from "react"
-import { produtoService } from "@/services/produtosService"
 
 export interface ListaOrdensCompraProps {
 	ordensCompra: OrdemCompra[]
+	produtos: Produto[]
 	onExcluir?: (id: string) => void
 }
 
-export default function ListaPedidos({ ordensCompra, onExcluir }: ListaOrdensCompraProps) {
-	const [produtos, setProdutos] = useState<Produto[]>([])
+export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }: ListaOrdensCompraProps) {
 	const [loading, setLoading] = useState(true)
 
-	useEffect(() => {
-		async function carregarProdutos() {
-			try {
-				const data = await produtoService.obterTodos()
-				setProdutos(data)
-			} catch (error) {
-				console.error("Erro ao carregar produtos em lista-ordens-compra:", error)
-			} finally {
-				setLoading(false)
-			}
-		}
-		carregarProdutos()
-	})
-
-	function obterNomeProduto(id: string): string {
+	function obterProduto(id: string): Partial<Produto | null> {
 		const produtoEncontrado = produtos.find((produto) => produto.id === id)
 		if (produtoEncontrado) {
-			return produtoEncontrado.nome
+			return produtoEncontrado
 		}
-		return "Produto sem nome cadastrado"
+		return null
 	}
-
-	if (loading) return <div>Carregando OCs...</div>
 
 	return (
 		<ul className="flex flex-col gap-2">
@@ -46,7 +29,7 @@ export default function ListaPedidos({ ordensCompra, onExcluir }: ListaOrdensCom
 					>
 						<div>
 							<span className="font-bold text-lg py-3 px-4">
-								{obterNomeProduto(oc.produtoId)}
+								{obterProduto(oc.produtoId)?.nome}
 							</span>
 							<div className="text-base text-zinc-400">
 								<span className="py-3 px-4">{oc.data}</span>

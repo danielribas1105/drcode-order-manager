@@ -18,7 +18,7 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 		usuarioId: "",
 		supermercadoId: "",
 		data: "",
-		qtdeCaixas: 0
+		qtdeCaixas: 0,
 	})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState("")
@@ -31,7 +31,7 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 				usuarioId: pedido.usuarioId || "",
 				supermercadoId: pedido.supermercadoId || "",
 				data: pedido.data || "",
-				qtdeCaixas: pedido.qtdeCaixas || 0
+				qtdeCaixas: pedido.qtdeCaixas || 0,
 			})
 		}
 	}, [pedido])
@@ -76,13 +76,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 			)}
 
 			<div className="mb-4">
-				<label htmlFor="nome" className="block text-gray-700 font-medium mb-2">
+				<label htmlFor="ordemCompraId" className="block text-gray-700 font-medium mb-2">
 					Ordem Compra *
 				</label>
 				<input
 					type="text"
-					id="nome"
-					name="nome"
+					id="ordemCompraId"
+					name="ordemCompraId"
 					value={formState.ordemCompraId}
 					onChange={handleChange}
 					required
@@ -91,13 +91,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 			</div>
 
 			<div className="mb-4">
-				<label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+				<label htmlFor="supermercadoId" className="block text-gray-700 font-medium mb-2">
 					Supermercado
 				</label>
 				<input
 					type="text"
-					id="email"
-					name="email"
+					id="supermercadoId"
+					name="supermercadoId"
 					value={formState.supermercadoId}
 					onChange={handleChange}
 					required
@@ -107,13 +107,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
-					<label htmlFor="cpf" className="block text-gray-700 font-medium mb-2">
+					<label htmlFor="usuarioId" className="block text-gray-700 font-medium mb-2">
 						Comprador
 					</label>
 					<input
 						type="text"
-						id="cpf"
-						name="cpf"
+						id="usuarioId"
+						name="usuarioId"
 						value={formState.usuarioId}
 						onChange={handleChange}
 						required
@@ -124,13 +124,13 @@ export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProp
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
-					<label htmlFor="cpf" className="block text-gray-700 font-medium mb-2">
+					<label htmlFor="data" className="block text-gray-700 font-medium mb-2">
 						Data
 					</label>
 					<input
 						type="text"
-						id="cpf"
-						name="cpf"
+						id="data"
+						name="data"
 						value={formState.data}
 						onChange={handleChange}
 						required

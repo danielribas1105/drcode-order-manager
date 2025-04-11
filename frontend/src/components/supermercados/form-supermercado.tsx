@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Supermercado, Usuario } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
-import { GerarIds } from "@/utils"
 import { usuarioService } from "@/services/usuariosService"
+import { GerarIds } from "@/utils"
 
 export interface SupermercadoFormProps {
 	supermercado?: Partial<Supermercado>
@@ -25,7 +25,6 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 	const [error, setError] = useState("")
 
 	useEffect(() => {
-
 		async function carregarUsuarios() {
 			try {
 				const data = await usuarioService.obterTodos()
@@ -35,7 +34,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 			}
 		}
 		carregarUsuarios()
-		
+
 		if (supermercado) {
 			setFormState({
 				id: supermercado.id,
@@ -87,13 +86,13 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 			)}
 
 			<div className="mb-4">
-				<label htmlFor="razao-social" className="block text-gray-700 font-medium mb-2">
+				<label htmlFor="razaoSocial" className="block text-gray-700 font-medium mb-2">
 					Razão Social *
 				</label>
 				<input
 					type="text"
-					id="razao-social"
-					name="razao-social"
+					id="razaoSocial"
+					name="razaoSocial"
 					value={formState.razaoSocial}
 					onChange={handleChange}
 					required
@@ -118,19 +117,21 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 				<div>
-					<label htmlFor="comprador" className="block text-gray-700 font-medium mb-2">
+					<label htmlFor="usuarioId" className="block text-gray-700 font-medium mb-2">
 						Comprador
 					</label>
 					<select
-						id="comprador"
-						name="comprador"
+						id="usuarioId"
+						name="usuarioId"
 						value={formState.usuarioId}
 						onChange={handleChange}
 						required
 						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 					>
-						<option value="" disabled>Selecione um comprador</option>
-						{usuarios.map(usuario => (
+						<option value="" disabled>
+							Selecione um comprador
+						</option>
+						{usuarios.map((usuario) => (
 							<option key={usuario.id} value={usuario.id}>
 								{usuario.nome}
 							</option>

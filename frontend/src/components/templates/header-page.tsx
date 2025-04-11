@@ -47,7 +47,7 @@ export default function HeaderPage({ titulo, textoBtn, linkBtn, textofiltro, chi
 					</Link>
 				)}
 				<Link href="/home" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-					Voltar
+					Home
 				</Link>
 				{children}
 			</div>
