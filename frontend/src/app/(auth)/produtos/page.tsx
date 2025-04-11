@@ -3,12 +3,10 @@ import { useEffect, useState } from "react"
 import { Produto } from "@core"
 import { produtoService } from "@/services/produtosService"
 import Container from "@/components/layout/container"
-import TabelaProdutos from "@/components/produtos/tabela-produtos"
 import HeaderPage from "@/components/templates/header-page"
 import ListaProdutos from "@/components/produtos/lista-produtos"
 
 export default function ProdutosPage() {
-
 	const [produtos, setProdutos] = useState<Produto[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -49,8 +47,7 @@ export default function ProdutosPage() {
 				textoBtn="Adicionar Produto"
 				linkBtn="/produtos/add"
 			/>
-			{/* <TabelaProdutos produtos={produtos} onExcluir={handleExcluir} /> */}
-			<ListaProdutos produtos={produtos} onExcluir={handleExcluir}/>
+			<ListaProdutos produtos={produtos} onExcluir={handleExcluir} />
 		</Container>
 	)
 }

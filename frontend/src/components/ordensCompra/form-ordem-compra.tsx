@@ -1,134 +1,219 @@
+"use client"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { OrdemCompra } from "@core"
-import { IconPlus } from "@tabler/icons-react"
-import { GerarDatas } from "@/utils"
-import Container from "@/components/layout/container"
-import BtnsSaveCancel from "@/components/templates/btns-save-cancel"
-import FiltroProduto from "@/components/produtos/filtro-produto"
+import { GerarIds } from "@/utils"
+import { ordemCompraService } from "@/services/ordensCompraService"
 
-export interface FormOrdemCompraProps {
-	ordemCompra: Partial<OrdemCompra>
-	titleForm: string
-	alteraOrdemCompra: (ordemCompra: Partial<OrdemCompra>) => void
-	salvar: () => void
-	cancelar: () => void
+export interface OrdemCompraFormProps {
+	ordemCompra?: OrdemCompra
+	isEditing?: boolean
 }
 
-export default function FormOrdemCompra(props: FormOrdemCompraProps) {
-	const { ordemCompra, titleForm, alteraOrdemCompra, salvar, cancelar } = props
+export default function OrdemCompraForm({ ordemCompra, isEditing = false }: OrdemCompraFormProps) {
+	const router = useRouter()
+	const [formState, setFormState] = useState({
+		id: GerarIds.newId(),
+		data: "",
+		preco: 0,
+		prazo: 0,
+		qtdeCaixasPallet: 0,
+		qtdePallets: 0,
+		entrega: "",
+		observacoes: "",
+		status: "",
+		produtoId: "",
+		usuarioId: "",
+	})
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [error, setError] = useState("")
+
+	useEffect(() => {
+		if (ordemCompra) {
+			setFormState({
+				id: ordemCompra.id,
+				data: ordemCompra.data || "",
+				preco: ordemCompra.preco || 0,
+				prazo: ordemCompra.prazo || 0,
+				qtdeCaixasPallet: ordemCompra.qtdeCaixasPallet || 0,
+				qtdePallets: ordemCompra.qtdePallets || 0,
+				entrega: ordemCompra.entrega || "",
+				observacoes: ordemCompra.observacoes || "",
+				status: ordemCompra.status || "",
+				produtoId: ordemCompra.produtoId || "",
+				usuarioId: ordemCompra.usuarioId || "",
+			})
+		}
+	}, [ordemCompra])
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		const { name, value } = e.target
+		setFormState((prev) => ({
+			...prev,
+			[name]: name === "preco" || name === "estoque" ? Number(value) : value,
+		}))
+	}
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		setIsSubmitting(true)
+		setError("")
+
+		try {
+			if (isEditing && ordemCompra) {
+				await ordemCompraService.atualizar(ordemCompra.id, formState)
+			} else {
+				await ordemCompraService.criar(formState)
+			}
+			router.push("/ordens_compra")
+			router.refresh()
+		} catch (error) {
+			console.error("Erro ao salvar OC:", error)
+			setError("Ocorreu um erro ao salvar a OC. Tente novamente.")
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
 
 	return (
-		<Container className="flex-col">
-			<div className="flex flex-col justify-between md:flex-row gap-4 items-center mb-4">
-				<h2 className="title-page-default">{titleForm}</h2>
-				<FiltroProduto placeholder={"Buscar produto"} />
-				<button
-					className="flex justify-center items-center gap-1 px-2 py-1 font-logo text-lg text-logo-white bg-orange-400 hover:bg-orange-600 border-2 rounded-md"
-					onClick={(e) => {
-						e.preventDefault()
-						console.log("Add produto")
-						/* adicionarItem(props.produto) */
-					}}
-				>
-					<IconPlus size={20} />
-					<span>Adicionar Produto</span>
-				</button>
+		<form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
+			{error && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					{error}
+				</div>
+			)}
+
+			<div className="mb-4">
+				<label htmlFor="produtoId" className="block text-gray-700 font-medium mb-2">
+					Ordem Compra *
+				</label>
+				<input
+					type="text"
+					id="produtoId"
+					name="produtoId"
+					value={formState.produtoId}
+					onChange={handleChange}
+					required
+					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
 			</div>
-			<div className="flex flex-1 gap-4 mb-6">
-				<div className="flex flex-1 flex-col font-texto">
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Nome do produto:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Nome do produto"
-								onChange={(e) => alteraOrdemCompra({ ...ordemCompra, id: e.target.value })}
-								value={ordemCompra.id ?? ""}
-							/>
-						</div>
-						<div className="flex flex-col">
-							<span>Código da OC:</span>
-							<input
-								className="text-xl text-zinc-400 p-2 rounded-md border-2 outline-none read-only:bg-gray-100"
-								readOnly
-								value={ordemCompra.id ?? ""}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Preço:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="0,00"
-								onChange={(e) =>
-									alteraOrdemCompra({ ...ordemCompra, preco: +e.target.value })
-								}
-								value={ordemCompra.preco ?? ""}
-							/>
-						</div>
-						<div className="flex flex-1 flex-col">
-							<span>Data:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="E-mail mais utilizado"
-								onChange={(e) => alteraOrdemCompra({ ...ordemCompra, data: e.target.value })}
-								value={ordemCompra.data ?? GerarDatas.dataHoraMinuto()}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Caixas por pallet:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Quantidade de caixas por pallet"
-								onChange={(e) =>
-									alteraOrdemCompra({ ...ordemCompra, qtdeCaixasPallet: +e.target.value })
-								}
-								value={ordemCompra.qtdeCaixasPallet ?? ""}
-							/>
-						</div>
-						<div className="flex flex-1 flex-col">
-							<span>Quantidade de pallets:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Total de pallets"
-								onChange={(e) =>
-									alteraOrdemCompra({ ...ordemCompra, qtdePallets: +e.target.value })
-								}
-								value={ordemCompra.qtdePallets ?? ""}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 gap-4">
-						<div className="flex flex-1 flex-col">
-							<span>Prazo:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Quantidade de dias"
-								onChange={(e) =>
-									alteraOrdemCompra({ ...ordemCompra, prazo: +e.target.value })
-								}
-								value={ordemCompra.prazo ?? ""}
-							/>
-						</div>
-						<div className="flex flex-1 flex-col">
-							<span>Entrega:</span>
-							<input
-								className="text-xl text-logo-black p-2 rounded-md border-2 outline-none"
-								placeholder="Tipo de entrega"
-								onChange={(e) =>
-									alteraOrdemCompra({ ...ordemCompra, entrega: e.target.value })
-								}
-								value={ordemCompra.entrega ?? ""}
-							/>
-						</div>
-					</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="data" className="block text-gray-700 font-medium mb-2">
+						Data
+					</label>
+					<input
+						type="text"
+						id="data"
+						name="data"
+						value={formState.data}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
 				</div>
 			</div>
-			<div className="flex flex-1 justify-end">
-				<BtnsSaveCancel salvar={salvar} cancelar={cancelar} />
+
+			<div className="mb-4">
+				<label htmlFor="preco" className="block text-gray-700 font-medium mb-2">
+					Preço
+				</label>
+				<input
+					type="text"
+					id="preco"
+					name="preco"
+					value={formState.preco}
+					onChange={handleChange}
+					required
+					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
 			</div>
-		</Container>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="prazo" className="block text-gray-700 font-medium mb-2">
+						Prazo
+					</label>
+					<input
+						type="text"
+						id="prazo"
+						name="prazo"
+						value={formState.prazo}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="qtdeCaixasPallet" className="block text-gray-700 font-medium mb-2">
+						Qtde Caixas Pallet
+					</label>
+					<input
+						type="text"
+						id="qtdeCaixasPallet"
+						name="qtdeCaixasPallet"
+						value={formState.qtdeCaixasPallet}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="qtdePallets" className="block text-gray-700 font-medium mb-2">
+						Qtde de Pallet
+					</label>
+					<input
+						type="text"
+						id="qtdePallets"
+						name="qtdePallets"
+						value={formState.qtdePallets}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="entrega" className="block text-gray-700 font-medium mb-2">
+						Entrega
+					</label>
+					<input
+						type="text"
+						id="entrega"
+						name="entrega"
+						value={formState.entrega}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
+			</div>
+
+			<div className="flex justify-end gap-4">
+				<button
+					type="button"
+					onClick={() => router.back()}
+					className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+				>
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+				>
+					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
+				</button>
+			</div>
+		</form>
 	)
 }

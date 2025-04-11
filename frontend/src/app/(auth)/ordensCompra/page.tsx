@@ -40,51 +40,14 @@ export default function OrdensCompraPage() {
 	if (loading) return <div>Carregando...</div>
 
 	return (
-		<>
-			{/* <div>
-				<h1>Ordens de Compra</h1>
-				<Link href="/ordens_compra/nova">Nova Ordem de Compra</Link>
-				<table>
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>ProdutoId</th>
-							<th>Data</th>
-							<th>Preço</th>
-							<th>Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ordensCompra.map((ordem) => (
-							<tr key={ordem.id}>
-								<td>{ordem.id}</td>
-								<td>{ordem.produtoId}</td>
-								<td>{new Date(ordem.data).toLocaleDateString()}</td>
-								<td>
-									{ordem.preco.toLocaleString("pt-BR", {
-										style: "currency",
-										currency: "BRL",
-									})}
-								</td>
-								<td>
-									<Link href={`/ordens_compra/${ordem.id}`}>Detalhes</Link>
-									<Link href={`/ordens_compra/${ordem.id}/editar`}>Editar</Link>
-									<button onClick={() => handleExcluir(ordem.id)}>Excluir</button>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div> */}
-			<Container className="flex-col">
-				<HeaderPage
-					titulo="OCs Cadastradas"
-					textofiltro={"Pesquisar Ordem Compra"}
-					textoBtn="Adicionar OC"
-					linkBtn="/ordens_compra/add"
-				/>
-				<ListaOrdensCompra ordensCompra={ordensCompra} />
-			</Container>
-		</>
+		<Container className="flex-col">
+			<HeaderPage
+				titulo="OCs Cadastradas"
+				textofiltro={"Pesquisar Ordem Compra"}
+				textoBtn="Adicionar OC"
+				linkBtn="/ordensCompra/add"
+			/>
+			<ListaOrdensCompra ordensCompra={ordensCompra} onExcluir={handleExcluir} />
+		</Container>
 	)
 }

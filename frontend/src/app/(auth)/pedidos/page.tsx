@@ -7,7 +7,6 @@ import ListaPedidos from "@/components/pedidos/lista-pedidos"
 import HeaderPage from "@/components/templates/header-page"
 
 export default function PedidosPage() {
-
 	const [pedidos, setPedidos] = useState<Pedido[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -48,7 +47,7 @@ export default function PedidosPage() {
 				textoBtn="Adicionar Pedido"
 				linkBtn="/pedidos/add"
 			/>
-			<ListaPedidos pedidos={pedidos} />
+			<ListaPedidos pedidos={pedidos} onExcluir={handleExcluir} />
 		</Container>
 	)
 }

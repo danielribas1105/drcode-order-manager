@@ -7,7 +7,7 @@ import { ordemCompraService } from "@/services/ordensCompraService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 
-export default function DetalhePedidoPage() {
+export default function DetalheOrdemCompraPage() {
 	const params = useParams()
 	const router = useRouter()
 	const [ordemCompra, setOrdemCompra] = useState<OrdemCompra | null>(null)
@@ -40,7 +40,7 @@ export default function DetalhePedidoPage() {
 		if (confirm("Tem certeza que deseja excluir esta ordem de compra?")) {
 			try {
 				await ordemCompraService.excluir(ordemCompra.id)
-				router.push("/ordens_compra")
+				router.push("/ordensCompra")
 			} catch (error) {
 				console.error("Erro ao excluir ordem de compra:", error)
 				setError("Não foi possível excluir a ordem de compra.")
@@ -64,9 +64,9 @@ export default function DetalhePedidoPage() {
 
 	return (
 		<Container className="flex-col">
-			<HeaderPage titulo="Detalhes do Pedido" textoBtn="Voltar para Lista" linkBtn="/pedidos">
+			<HeaderPage titulo="Detalhes da OC" textoBtn="Voltar para Lista" linkBtn="/ordensCompra">
 				<Link
-					href={`/ordens_compra/edit/${ordemCompra.id}`}
+					href={`/ordensCompra/edit/${ordemCompra.id}`}
 					className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
 					Editar

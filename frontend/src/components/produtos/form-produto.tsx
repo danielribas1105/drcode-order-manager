@@ -5,7 +5,7 @@ import { Produto } from "@core"
 import { produtoService } from "@/services/produtosService"
 import { GerarIds } from "@/utils"
 
-interface ProdutoFormProps {
+export interface ProdutoFormProps {
 	produto?: Produto
 	isEditing?: boolean
 }
