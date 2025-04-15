@@ -1,12 +1,26 @@
+"use client"
 import { Pedido } from "@core"
 import BtnsGroup from "../templates/btns-group"
+import { pedidoService } from "@/services/pedidosService"
 
 export interface ListaPedidosProps {
 	pedidos: Pedido[]
-	onExcluir?: (id: string) => void
+	/* onExcluir?: (id: string) => void */
 }
 
-export default function ListaPedidos({ pedidos, onExcluir }: ListaPedidosProps) {
+export default function ListaPedidos({ pedidos }: ListaPedidosProps) {
+
+	const handleExcluir = async (id: string) => {
+		if (confirm("Tem certeza que deseja excluir este pedido?")) {
+			try {
+				await pedidoService.excluir(id)
+				//setPedidos(pedidos.filter((pedido) => pedido.id !== id))
+			} catch (error) {
+				console.error("Erro ao excluir pedido:", error)
+			}
+		}
+	}
+		
 	return (
 		<ul className="flex flex-col gap-2">
 			{pedidos.length > 0 ? (
@@ -24,7 +38,7 @@ export default function ListaPedidos({ pedidos, onExcluir }: ListaPedidosProps) 
 								<span className="py-3 px-4">{pedido.data}</span>
 							</div>
 						</div>
-						<BtnsGroup href="pedidos" objetoId={pedido.id} onExcluir={onExcluir} />
+						<BtnsGroup href="pedidos" objetoId={pedido.id} onExcluir={handleExcluir} />
 					</li>
 				))
 			) : (
