@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { Pedido } from "@core"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
@@ -13,6 +13,12 @@ export default function DetalhePedidoPage() {
 	const [pedido, setPedido] = useState<Pedido | null>(null)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
+
+	const searchParams = useSearchParams()
+	// Recupera as informações adicionais dos parâmetros de URL
+	const nomeProduto = searchParams.get("nomeProduto") || "Produto não especificado"
+	const nomeSupermercado = searchParams.get("nomeSupermercado") || "Supermercado não especificado"
+	const nomeUsuario = searchParams.get("nomeUsuario") || "Usuário não especificado"
 
 	const id = Array.isArray(params.id) ? params.id[0] : params.id
 
@@ -83,7 +89,7 @@ export default function DetalhePedidoPage() {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div>
 						<h3 className="text-gray-500 font-medium">Ordem Compra</h3>
-						<p className="text-lg">{pedido.ordemCompraId}</p>
+						<p className="text-lg">{nomeProduto}</p>
 					</div>
 
 					<div>
@@ -93,12 +99,12 @@ export default function DetalhePedidoPage() {
 
 					<div>
 						<h3 className="text-gray-500 font-medium">Supermercado</h3>
-						<p className="text-lg font-medium text-green-600">{pedido.supermercadoId}</p>
+						<p className="text-lg font-medium text-green-600">{nomeSupermercado}</p>
 					</div>
 
 					<div className="md:col-span-2">
 						<h3 className="text-gray-500 font-medium">Comprador</h3>
-						<p className="text-lg">{pedido.usuarioId}</p>
+						<p className="text-lg">{nomeUsuario}</p>
 					</div>
 				</div>
 			</div>

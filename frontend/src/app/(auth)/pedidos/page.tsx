@@ -1,34 +1,18 @@
-
-import { useEffect, useState } from "react"
-import { Pedido } from "@core"
 import { pedidoService } from "@/services/pedidosService"
 import Container from "@/components/layout/container"
 import ListaPedidos from "@/components/pedidos/lista-pedidos"
 import HeaderPage from "@/components/templates/header-page"
+import { ordemCompraService } from "@/services/ordensCompraService"
+import { produtoService } from "@/services/produtosService"
+import { usuarioService } from "@/services/usuariosService"
+import { supermercadoService } from "@/services/supermercadosService"
 
 export default async function PedidosPage() {
-	//const [pedidos, setPedidos] = useState<Pedido[]>([])
-	//const [loading, setLoading] = useState(true)
-
-	const data = await pedidoService.obterTodos()
-	/* useEffect(() => {
-		async function carregarPedidos() {
-			console.log("carregarPedidos")
-			try {
-				setPedidos(data)
-			} catch (error) {
-				console.error("Erro ao carregar pedidos:", error)
-			} finally {
-				setLoading(false)
-			}
-		} 
-
-		carregarPedidos()
-	}, [])*/
-
-	
-
-	//if (loading) return <div>Carregando...</div>
+	const pedidos = await pedidoService.obterTodos()
+	const ordensCompra = await ordemCompraService.obterTodas()
+	const produtos = await produtoService.obterTodos()
+	const usuarios = await usuarioService.obterTodos()
+	const supermercados = await supermercadoService.obterTodos()
 
 	return (
 		<Container className="flex-col">
@@ -38,7 +22,13 @@ export default async function PedidosPage() {
 				textoBtn="Adicionar Pedido"
 				linkBtn="/pedidos/add"
 			/>
-			<ListaPedidos pedidos={data} />
+			<ListaPedidos
+				pedidos={pedidos}
+				ordensCompra={ordensCompra}
+				produtos={produtos}
+				usuarios={usuarios}
+				supermercados={supermercados}
+			/>
 		</Container>
 	)
 }
