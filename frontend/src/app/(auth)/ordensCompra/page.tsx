@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useState } from "react"
 import { OrdemCompra, Produto } from "@core"
 import { ordemCompraService } from "@/services/ordensCompraService"
@@ -7,12 +6,13 @@ import ListaOrdensCompra from "@/components/ordensCompra/lista-ordens-compra"
 import HeaderPage from "@/components/templates/header-page"
 import { produtoService } from "@/services/produtosService"
 
-export default function OrdensCompraPage() {
-	const [produtos, setProdutos] = useState<Produto[]>([])
+export default async function OrdensCompraPage() {
+	const ordensCompra = await ordemCompraService.obterTodas()
+	/* const [produtos, setProdutos] = useState<Produto[]>([])
 	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(true) */
 
-	useEffect(() => {
+	/* useEffect(() => {
 		async function carregarProdutos() {
 			try {
 				const data = await produtoService.obterTodos()
@@ -38,9 +38,9 @@ export default function OrdensCompraPage() {
 		}
 
 		carregarOrdensCompra()
-	}, [])
+	}, []) */
 
-	const handleExcluir = async (id: string) => {
+	/* const handleExcluir = async (id: string) => {
 		if (confirm("Tem certeza que deseja excluir esta ordem de compra?")) {
 			try {
 				await ordemCompraService.excluir(id)
@@ -51,7 +51,7 @@ export default function OrdensCompraPage() {
 		}
 	}
 
-	if (loading) return <div>Carregando...</div>
+	if (loading) return <div>Carregando...</div> */
 
 	return (
 		<Container className="flex-col">
@@ -61,7 +61,7 @@ export default function OrdensCompraPage() {
 				textoBtn="Adicionar OC"
 				linkBtn="/ordensCompra/add"
 			/>
-			<ListaOrdensCompra ordensCompra={ordensCompra} produtos={produtos} onExcluir={handleExcluir} />
+			<ListaOrdensCompra ordensCompra={ordensCompra} />
 		</Container>
 	)
 }

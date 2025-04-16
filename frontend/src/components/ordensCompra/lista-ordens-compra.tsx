@@ -4,17 +4,19 @@ import { Moeda } from "@/utils"
 import BtnsGroup from "../templates/btns-group"
 import BtnsPedidoOc from "./btns-pedido-oc"
 import { pedidoService } from "@/services/pedidosService"
+import { produtoService } from "@/services/produtosService"
 
 export interface ListaOrdensCompraProps {
 	ordensCompra: OrdemCompra[]
-	produtos: Produto[]
 	onExcluir?: (id: string) => void
 }
 
-export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }: ListaOrdensCompraProps) {
-	const [pedidos, setPedidos] = useState<Pedido[]>([])
+export default async function ListaOrdensCompra({ ordensCompra, onExcluir }: ListaOrdensCompraProps) {
+	const pedidos = await pedidoService.obterTodos()
+	const produtos = await produtoService.obterTodos()
+	//const [pedidos, setPedidos] = useState<Pedido[]>([])
 
-	useEffect(() => {
+	/* useEffect(() => {
 		async function carregarPedidos() {
 			try {
 				const data = await pedidoService.obterTodos()
@@ -24,7 +26,7 @@ export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }:
 			}
 		}
 		carregarPedidos()
-	})
+	}) */
 
 	function obterProduto(id: string): Partial<Produto | null> {
 		const produtoEncontrado = produtos.find((produto) => produto.id === id)
@@ -35,11 +37,17 @@ export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }:
 	}
 
 	function totalPedidosOc(id: string): number {
-		const totalPedidos = pedidos.filter((p) => {
-			p.ordemCompraId === id
-		})
-		console.log(totalPedidos.length)
+		const totalPedidos = pedidos.filter((p) => p.ordemCompraId === id)
 		return totalPedidos.length
+	}
+
+	function totalCaixasPedidosOc(id: string): number {
+		let totalCaixas = 0
+		const totalPedidos = pedidos.filter((p) => p.ordemCompraId === id)
+		totalPedidos.forEach((pedido) => {
+			totalCaixas += pedido.qtdeCaixas
+		})
+		return totalCaixas
 	}
 
 	return (
@@ -65,11 +73,15 @@ export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }:
 							<div className="flex gap-3 font-semibold text-zinc-600">
 								<div className="flex gap-3">
 									<span>Total de pedidos:</span>
-									<span>{totalPedidosOc(oc.id)}</span>
+									<span className="text-blue-500">{totalPedidosOc(oc.id)}</span>
 								</div>
 								<div className="flex gap-3">
-									<span>Qtde de caixas: 230</span>
-									<span>Qtde de caixas: 230</span>
+									<span>Qtde de caixas:</span>
+									<span className="text-emerald-500">{totalCaixasPedidosOc(oc.id)}</span>
+								</div>
+								<div className="flex gap-3">
+									<span>Qtde de caixas restantes:</span>
+									<span className="text-red-600">{(oc.qtdeCaixasPallet * oc.qtdePallets) - totalCaixasPedidosOc(oc.id)}</span>
 								</div>
 							</div>
 						</div>
