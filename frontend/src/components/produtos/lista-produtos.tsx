@@ -13,7 +13,7 @@ export default function ListaProdutos({ produtos, onExcluir }: ListaProdutosProp
 				produtos.map((produto) => (
 					<li
 						key={produto.id}
-						className="flex flex-col md:flex-row md:justify-between p-2 border-2 border-zinc-200 rounded-lg hover:bg-gray-50"
+						className="flex flex-col md:flex-row md:justify-between py-3 px-4 border-2 border-zinc-200 rounded-lg hover:bg-gray-50"
 					>
 						<div>
 							<span className="font-bold text-lg py-3 px-4">{produto.nome}</span>

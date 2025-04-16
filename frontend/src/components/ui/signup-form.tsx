@@ -29,7 +29,7 @@ export default function SignupForm() {
 				<input
 					id="senha"
 					name="senha"
-					type="senha"
+					type="password"
 					placeholder="Senha"
 					className="py-1 px-3 border-2 border-zinc-400 rounded-md text-lg"
 				/>

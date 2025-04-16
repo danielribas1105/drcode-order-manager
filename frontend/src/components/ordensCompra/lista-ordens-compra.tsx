@@ -48,7 +48,7 @@ export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }:
 				ordensCompra.map((oc) => (
 					<li
 						key={oc.id}
-						className="flex flex-col md:flex-row md:justify-between p-2 border-2 border-zinc-200 rounded-lg hover:bg-gray-50"
+						className="flex flex-col md:flex-row md:justify-between py-3 px-4 border-2 border-zinc-200 rounded-lg hover:bg-gray-50"
 					>
 						<div className="pl-4">
 							<div className="flex gap-4 font-bold text-lg">

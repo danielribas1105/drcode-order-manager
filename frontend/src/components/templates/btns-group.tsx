@@ -27,7 +27,7 @@ export default function BtnsGroup({ href, objeto, infoAdicional, onExcluir }: Bt
 	const urlParams = encodeInfoAdicional()
 
 	return (
-		<div className="py-3 pr-4 flex items-center gap-2">
+		<div className="flex items-center gap-2">
 			<Link
 				href={`/${href}/${objeto.id}${urlParams}`}
 				className="flex gap-1 text-blue-600 hover:bg-blue-600 hover:text-white py-1 px-2 border-2 border-blue-600 rounded-md"

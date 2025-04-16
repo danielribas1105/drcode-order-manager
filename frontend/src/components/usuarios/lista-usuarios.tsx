@@ -1,67 +1,47 @@
-import Link from "next/link"
+import Image from "next/image"
 import { Usuario } from "@core"
+import BtnsGroup from "../templates/btns-group"
+import semImagem from "@/../public/images/img-user.png"
+
 
 export interface ListaUsuariosProps {
 	usuarios: Usuario[]
 	onExcluir?: (id: string) => void
 }
 
-export default function Listausuarios({ usuarios, onExcluir }: ListaUsuariosProps) {
+export default function ListaUsuarios({ usuarios, onExcluir }: ListaUsuariosProps) {
 	return (
-		<div className="w-full overflow-x-auto">
-			<table className="min-w-full bg-white rounded-lg overflow-hidden">
-				<thead className="bg-gray-100">
-					<tr>
-						<th className="text-left py-3 px-4 font-semibold text-sm">Nome</th>
-						<th className="text-left py-3 px-4 font-semibold text-sm">E-mail</th>
-						<th className="text-left py-3 px-4 font-semibold text-sm">CPF</th>
-						<th className="text-left py-3 px-4 font-semibold text-sm">Perfil</th>
-						<th className="text-left py-3 px-4 font-semibold text-sm">Status</th>
-						<th className="text-left py-3 px-4 font-semibold text-sm">Ações</th>
-					</tr>
-				</thead>
-				<tbody>
-					{usuarios.length > 0 ? (
-						usuarios.map((usuario) => (
-							<tr key={usuario.id} className="border-b hover:bg-gray-50">
-								<td className="py-3 px-4">{usuario.nome}</td>
-								<td className="py-3 px-4">{usuario.email}</td>
-								<td className="py-3 px-4">{usuario.cpf}</td>
-								<td className="py-3 px-4">{usuario.perfil}</td>
-								<td className="py-3 px-4">{usuario.status}</td>
-								<td className="py-3 px-4 flex gap-2">
-									<Link
-										href={`/usuarios/${usuario.id}`}
-										className="text-blue-600 hover:text-blue-800"
-									>
-										Ver
-									</Link>
-									<Link
-										href={`/usuarios/edit/${usuario.id}`}
-										className="text-green-600 hover:text-green-800"
-									>
-										Editar
-									</Link>
-									{onExcluir && (
-										<button
-											onClick={() => onExcluir(usuario.id)}
-											className="text-red-600 hover:text-red-800"
-										>
-											Excluir
-										</button>
-									)}
-								</td>
-							</tr>
-						))
-					) : (
-						<tr>
-							<td colSpan={6} className="py-4 px-4 text-center text-gray-500">
-								Nenhum usuário encontrado
-							</td>
-						</tr>
-					)}
-				</tbody>
-			</table>
-		</div>
+		<ul className="flex flex-col gap-2">
+			{usuarios.length > 0 ? (
+				usuarios.map((usuario) => (
+					<li
+						key={usuario.id}
+						className="flex flex-col md:flex-row md:justify-between py-3 px-4 border-2 border-zinc-200 rounded-lg hover:bg-gray-50"
+					>
+						<div className="flex gap-2 items-center">
+							<div className="w-12 h-12 relative bg-white">
+								<Image
+									src={usuario.imagemUrl === "" ? semImagem : usuario.imagemUrl}
+									fill
+									className="object-contain"
+									alt={`Foto de perfil ${usuario.nome}`}
+								/>
+							</div>
+							<div>
+								<span className="font-bold text-lg py-3 px-4">{usuario.nome}</span>
+								<div className="text-base text-zinc-400">
+									<span className="py-3 px-4">{usuario.email}</span>
+									<span className="py-3 px-4">Perfil: {usuario.perfil}</span>
+									<span className="py-3 px-4">Status: {usuario.status}</span>
+								</div>
+							</div>
+						</div>
+						<BtnsGroup href="usuarios" objeto={usuario} onExcluir={onExcluir} />
+					</li>
+				))
+			) : (
+				<span className="py-4 px-4 text-center text-gray-500">Nenhum usuário encontrado</span>
+			)}
+		</ul>
 	)
 }
