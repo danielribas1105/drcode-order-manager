@@ -3,7 +3,7 @@ import { IconCancel, IconEye, IconPencil } from "@tabler/icons-react"
 
 export interface BtnsGroupProps {
 	href: string
-	objeto: any // Poderia ser tipado mais especificamente se necessário
+	objeto?: any // Poderia ser tipado mais especificamente se necessário
 	infoAdicional?: any // Informações adicionais que podem ser úteis para o componente
 	onExcluir?: (id: string) => void
 }

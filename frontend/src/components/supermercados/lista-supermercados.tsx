@@ -21,7 +21,7 @@ export default function ListaSupermercados({ supermercados, onExcluir }: ListaSu
                                         <span className="py-3 px-4">{supermercado.status}</span>
                                     </div>
                                 </div>
-                                <BtnsGroup href="supermercados" objetoId={supermercado.id} onExcluir={onExcluir}/>
+                                <BtnsGroup href="supermercados" objeto={supermercado.id} onExcluir={onExcluir}/>
                                 {/* <div className="py-3 px-4 flex items-center gap-3">
                                     <Link
                                         href={`/produtos/${produto.id}`}

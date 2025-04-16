@@ -75,7 +75,7 @@ export default function ListaOrdensCompra({ ordensCompra, produtos, onExcluir }:
 						</div>
 						<div className="flex">
 							<BtnsPedidoOc />
-							<BtnsGroup href="ordensCompra" objetoId={oc.id} onExcluir={onExcluir} />
+							<BtnsGroup href="ordensCompra" objeto={oc.id} onExcluir={onExcluir} />
 						</div>
 					</li>
 				))

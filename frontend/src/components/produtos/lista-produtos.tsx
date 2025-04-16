@@ -22,7 +22,7 @@ export default function ListaProdutos({ produtos, onExcluir }: ListaProdutosProp
 								<span className="py-3 px-4">{produto.peso}</span>
 							</div>
 						</div>
-						<BtnsGroup href="produtos" objetoId={produto.id} onExcluir={onExcluir} />
+						<BtnsGroup href="produtos" objeto={produto.id} onExcluir={onExcluir} />
 					</li>
 				))
 			) : (
