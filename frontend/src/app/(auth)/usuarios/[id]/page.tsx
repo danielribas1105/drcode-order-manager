@@ -1,11 +1,13 @@
 "use client"
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Usuario } from "@core"
 import { usuarioService } from "@/services/usuariosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
+import semImagem from "@/../public/images/img-user.png"
 
 export default function DetalheUsuarioPage() {
 	const params = useParams()
@@ -79,21 +81,30 @@ export default function DetalheUsuarioPage() {
 				</button>
 			</HeaderPage>
 
-			<div className="bg-white shadow rounded-lg p-6">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div className="flex items-center gap-10 bg-white shadow rounded-lg p-6">
+				<div className="w-[240px] h-[240px] relative">
+					<Image
+						src={!usuario.imagemUrl ? semImagem : usuario.imagemUrl}
+						fill
+						className="object-contain"
+						alt={`Foto do produto ${usuario.nome}`}
+					/>
+				</div>
+				<div className="flex flex-col gap-6">
 					<div>
 						<h3 className="text-gray-500 font-medium">Nome</h3>
 						<p className="text-lg">{usuario.nome}</p>
 					</div>
 
-					<div>
-						<h3 className="text-gray-500 font-medium">E-mail</h3>
-						<p className="text-lg">{usuario.email}</p>
-					</div>
-
-					<div>
-						<h3 className="text-gray-500 font-medium">CPF</h3>
-						<p className="text-lg font-medium text-green-600">{usuario.cpf}</p>
+					<div className="flex gap-10">
+						<div>
+							<h3 className="text-gray-500 font-medium">E-mail</h3>
+							<p className="text-lg">{usuario.email}</p>
+						</div>
+						<div>
+							<h3 className="text-gray-500 font-medium">CPF</h3>
+							<p className="text-lg font-medium text-green-600">{usuario.cpf}</p>
+						</div>
 					</div>
 
 					<div className="md:col-span-2">
