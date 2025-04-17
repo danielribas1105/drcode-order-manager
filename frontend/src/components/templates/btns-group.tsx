@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { IconCancel, IconEye, IconPencil } from "@tabler/icons-react"
+import { OrdemCompra } from "@core"
 
 export interface BtnsGroupProps {
 	href: string

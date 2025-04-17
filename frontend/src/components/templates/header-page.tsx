@@ -1,6 +1,6 @@
-// src/components/templates/header-page.tsx
 import Link from "next/link"
 import { ReactNode } from "react"
+import { IconHome, IconPlus } from "@tabler/icons-react"
 
 interface HeaderPageProps {
 	titulo: string
@@ -12,7 +12,7 @@ interface HeaderPageProps {
 
 export default function HeaderPage({ titulo, textoBtn, linkBtn, textofiltro, children }: HeaderPageProps) {
 	return (
-		<div className="w-full flex flex-col lg:flex-row justify-between items-center gap-4 mb-6">
+		<div className="w-full flex flex-col lg:flex-row justify-between items-center gap-4 my-6">
 			<h1 className="text-2xl font-bold">{titulo}</h1>
 			<div className="flex items-center gap-4">
 				{textofiltro && (
@@ -41,12 +41,17 @@ export default function HeaderPage({ titulo, textoBtn, linkBtn, textofiltro, chi
 				{textoBtn && (
 					<Link
 						href={linkBtn}
-						className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+						className="flex gap-2 items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
 					>
+						<IconPlus />
 						{textoBtn}
 					</Link>
 				)}
-				<Link href="/home" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+				<Link
+					href="/home"
+					className="flex gap-2 items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+				>
+					<IconHome />
 					Home
 				</Link>
 				{children}

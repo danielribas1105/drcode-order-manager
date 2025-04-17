@@ -1,32 +1,23 @@
+"use client"
 import { useEffect, useState } from "react"
 import { OrdemCompra, Pedido, Produto } from "@core"
+import { ordemCompraService } from "@/services/ordensCompraService"
 import { Moeda } from "@/utils"
 import BtnsGroup from "../templates/btns-group"
 import BtnsPedidoOc from "./btns-pedido-oc"
-import { pedidoService } from "@/services/pedidosService"
-import { produtoService } from "@/services/produtosService"
 
 export interface ListaOrdensCompraProps {
 	ordensCompra: OrdemCompra[]
-	onExcluir?: (id: string) => void
+	produtos: Produto[]
+	pedidos: Pedido[]
 }
 
-export default async function ListaOrdensCompra({ ordensCompra, onExcluir }: ListaOrdensCompraProps) {
-	const pedidos = await pedidoService.obterTodos()
-	const produtos = await produtoService.obterTodos()
-	//const [pedidos, setPedidos] = useState<Pedido[]>([])
-
-	/* useEffect(() => {
-		async function carregarPedidos() {
-			try {
-				const data = await pedidoService.obterTodos()
-				setPedidos(data)
-			} catch (error) {
-				console.error("Erro ao carregar pedidos em lista-ordens-compra:", error)
-			}
-		}
-		carregarPedidos()
-	}) */
+export default function ListaOrdensCompra({
+	ordensCompra: initialOrdensCompra,
+	produtos,
+	pedidos,
+}: ListaOrdensCompraProps) {
+	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>(initialOrdensCompra)
 
 	function obterProduto(id: string): Partial<Produto | null> {
 		const produtoEncontrado = produtos.find((produto) => produto.id === id)
@@ -49,6 +40,22 @@ export default async function ListaOrdensCompra({ ordensCompra, onExcluir }: Lis
 		})
 		return totalCaixas
 	}
+
+	const handleExcluir = async (id: string) => {
+		if (confirm("Tem certeza que deseja excluir esta ordem de compra?")) {
+			try {
+				await ordemCompraService.excluir(id)
+				setOrdensCompra(ordensCompra.filter((ordem) => ordem.id !== id))
+			} catch (error) {
+				console.error("Erro ao excluir ordem de compra:", error)
+			}
+		}
+	}
+
+	// Atualiza o estado local se as props mudarem
+	useEffect(() => {
+		setOrdensCompra(initialOrdensCompra)
+	}, [initialOrdensCompra])
 
 	return (
 		<ul className="flex flex-col gap-2">
@@ -81,13 +88,15 @@ export default async function ListaOrdensCompra({ ordensCompra, onExcluir }: Lis
 								</div>
 								<div className="flex gap-3">
 									<span>Qtde de caixas restantes:</span>
-									<span className="text-red-600">{(oc.qtdeCaixasPallet * oc.qtdePallets) - totalCaixasPedidosOc(oc.id)}</span>
+									<span className="text-red-600">
+										{oc.qtdeCaixasPallet * oc.qtdePallets - totalCaixasPedidosOc(oc.id)}
+									</span>
 								</div>
 							</div>
 						</div>
 						<div className="flex">
 							<BtnsPedidoOc />
-							<BtnsGroup href="ordensCompra" objeto={oc.id} onExcluir={onExcluir} />
+							<BtnsGroup href="ordensCompra" objeto={oc} onExcluir={handleExcluir} />
 						</div>
 					</li>
 				))

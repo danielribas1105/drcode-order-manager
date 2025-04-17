@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { Produto } from "@core"
 import { produtoService } from "@/services/produtosService"
 import { GerarIds } from "@/utils"
+import { IconCancel, IconCheck } from "@tabler/icons-react"
 
 export interface ProdutoFormProps {
 	produto?: Produto
@@ -88,22 +89,21 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 				/>
 			</div>
 
-			<div className="mb-4">
-				<label htmlFor="marca" className="block text-gray-700 font-medium mb-2">
-					Marca
-				</label>
-				<input
-					type="text"
-					id="marca"
-					name="marca"
-					value={formState.marca}
-					onChange={handleChange}
-					required
-					className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-				/>
-			</div>
-
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<div>
+					<label htmlFor="marca" className="block text-gray-700 font-medium mb-2">
+						Marca
+					</label>
+					<input
+						type="text"
+						id="marca"
+						name="marca"
+						value={formState.marca}
+						onChange={handleChange}
+						required
+						className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+					/>
+				</div>
 				<div>
 					<label htmlFor="peso" className="block text-gray-700 font-medium mb-2">
 						Peso
@@ -119,6 +119,8 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 					/>
 				</div>
 			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
 
 			<div className="mb-6">
 				<label htmlFor="especificacoes" className="block text-gray-700 font-medium mb-2">
@@ -138,15 +140,17 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 				<button
 					type="button"
 					onClick={() => router.back()}
-					className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+					className="flex gap-2 itens-center px-4 py-2 text-red-600 hover:bg-red-600 hover:text-white border-2 border-red-600 rounded-md"
 				>
+					<IconCancel />
 					Cancelar
 				</button>
 				<button
 					type="submit"
 					disabled={isSubmitting}
-					className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+					className="flex gap-2 itens-center px-4 py-2 text-green-600 hover:bg-green-600 hover:text-white border-2 border-green-600 rounded-md disabled:bg-blue-400"
 				>
+					<IconCheck />
 					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
 				</button>
 			</div>

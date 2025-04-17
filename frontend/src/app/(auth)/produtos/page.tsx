@@ -1,16 +1,16 @@
-"use client"
-import { useEffect, useState } from "react"
-import { Produto } from "@core"
 import { produtoService } from "@/services/produtosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 import ListaProdutos from "@/components/produtos/lista-produtos"
+import { ordemCompraService } from "@/services/ordensCompraService"
 
-export default function ProdutosPage() {
-	const [produtos, setProdutos] = useState<Produto[]>([])
-	const [loading, setLoading] = useState(true)
+export default async function ProdutosPage() {
+	const produtos = await produtoService.obterTodos()
+	const ordensCompra = await ordemCompraService.obterTodas()
+	/* const [produtos, setProdutos] = useState<Produto[]>([])
+	const [loading, setLoading] = useState(true) */
 
-	useEffect(() => {
+	/* useEffect(() => {
 		async function carregarProdutos() {
 			console.log("carregarProdutos")
 			try {
@@ -24,20 +24,9 @@ export default function ProdutosPage() {
 		}
 
 		carregarProdutos()
-	}, [])
+	}, []) */
 
-	const handleExcluir = async (id: string) => {
-		if (confirm("Tem certeza que deseja excluir este produto?")) {
-			try {
-				await produtoService.excluir(id)
-				setProdutos(produtos.filter((produto) => produto.id !== id))
-			} catch (error) {
-				console.error("Erro ao excluir o produto:", error)
-			}
-		}
-	}
-
-	if (loading) return <div>Carregando...</div>
+	//if (loading) return <div>Carregando...</div>
 
 	return (
 		<Container className="flex-col">
@@ -47,7 +36,7 @@ export default function ProdutosPage() {
 				textoBtn="Adicionar Produto"
 				linkBtn="/produtos/add"
 			/>
-			<ListaProdutos produtos={produtos} onExcluir={handleExcluir} />
+			<ListaProdutos produtos={produtos} ordensCompra={ordensCompra} />
 		</Container>
 	)
 }

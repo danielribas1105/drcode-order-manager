@@ -5,9 +5,12 @@ import Container from "@/components/layout/container"
 import ListaOrdensCompra from "@/components/ordensCompra/lista-ordens-compra"
 import HeaderPage from "@/components/templates/header-page"
 import { produtoService } from "@/services/produtosService"
+import { pedidoService } from "@/services/pedidosService"
 
 export default async function OrdensCompraPage() {
 	const ordensCompra = await ordemCompraService.obterTodas()
+	const produtos = await produtoService.obterTodos()
+	const pedidos = await pedidoService.obterTodos()
 	/* const [produtos, setProdutos] = useState<Produto[]>([])
 	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
 	const [loading, setLoading] = useState(true) */
@@ -61,7 +64,7 @@ export default async function OrdensCompraPage() {
 				textoBtn="Adicionar OC"
 				linkBtn="/ordensCompra/add"
 			/>
-			<ListaOrdensCompra ordensCompra={ordensCompra} />
+			<ListaOrdensCompra ordensCompra={ordensCompra} produtos={produtos} pedidos={pedidos} />
 		</Container>
 	)
 }

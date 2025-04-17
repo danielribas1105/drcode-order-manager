@@ -1,23 +1,36 @@
-// src/app/produtos/[id]/page.tsx
 "use client"
+import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Produto } from "@core"
+import { OrdemCompra, Produto } from "@core"
 import { produtoService } from "@/services/produtosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
-import Link from "next/link"
+import semImagem from "@/../public/images/no-image.jpg"
+import { ordemCompraService } from "@/services/ordensCompraService"
 
 export default function DetalheProdutoPage() {
 	const params = useParams()
 	const router = useRouter()
 	const [produto, setProduto] = useState<Produto | null>(null)
+	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
 
 	const id = Array.isArray(params.id) ? params.id[0] : params.id
 
 	useEffect(() => {
+		async function carregarOrdensCompra() {
+			try {
+				const data = await ordemCompraService.obterTodas()
+				setOrdensCompra(data)
+			} catch (error) {
+				console.error("Erro ao carregar pedidos em lista-ordens-compra:", error)
+			}
+		}
+		carregarOrdensCompra()
+
 		async function carregarProduto(id: string) {
 			try {
 				const data = await produtoService.obterPorId(id)
@@ -35,8 +48,18 @@ export default function DetalheProdutoPage() {
 		}
 	}, [id])
 
+	function hasOrdensCompra(id: string): boolean {
+		const ocs = ordensCompra.filter((oc) => oc.produtoId === id)
+		return ocs.length > 0 ? true : false
+	}
+
 	const handleExcluir = async () => {
 		if (!produto) return
+
+		if (hasOrdensCompra(produto.id)) {
+			alert("O produto não pode ser excluído, pois, existem OCs associadas!")
+			return
+		}
 
 		if (confirm("Tem certeza que deseja excluir este produto?")) {
 			try {
@@ -80,42 +103,36 @@ export default function DetalheProdutoPage() {
 				</button>
 			</HeaderPage>
 
-			<div className="bg-white shadow rounded-lg p-6">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div className="flex items-center gap-8 bg-white shadow rounded-lg p-6">
+				<div className="w-[240px] h-[240px] relative">
+					<Image
+						src={!produto.imagemUrl ? semImagem : produto.imagemUrl}
+						fill
+						className="object-contain"
+						alt={`Foto do produto ${produto.nome}`}
+					/>
+				</div>
+				<div className="flex flex-col gap-6">
 					<div>
-						<h3 className="text-gray-500 font-medium">Nome</h3>
+						<h3 className="text-gray-500 font-medium">Produto</h3>
 						<p className="text-lg">{produto.nome}</p>
 					</div>
 
-					<div>
-						<h3 className="text-gray-500 font-medium">Categoria</h3>
-						<p className="text-lg">{produto.marca || ""}</p>
+					<div className="flex gap-10">
+						<div>
+							<h3 className="text-gray-500 font-medium">Marca</h3>
+							<p className="text-lg">{produto.marca || ""}</p>
+						</div>
+						<div>
+							<h3 className="text-gray-500 font-medium">Peso</h3>
+							<p className="text-lg font-medium text-green-600">{produto.peso || ""}</p>
+						</div>
 					</div>
-
-					<div>
-						<h3 className="text-gray-500 font-medium">Preço</h3>
-						<p className="text-lg font-medium text-green-600">{produto.peso || ""}</p>
-					</div>
-
-					{/* <div>
-						<h3 className="text-gray-500 font-medium">Estoque</h3>
-						<p className="text-lg">{produto.estoque} unidades</p>
-					</div> */}
 
 					<div className="md:col-span-2">
 						<h3 className="text-gray-500 font-medium">Especificações</h3>
-						<p className="text-lg">{produto.especificacoes || "Sem especificações"}</p>
+						<p className="text-lg">{produto.especificacoes || ""}</p>
 					</div>
-
-					{/* <div>
-						<h3 className="text-gray-500 font-medium">Data de Criação</h3>
-						<p className="text-lg">{new Date(produto.createdAt).toLocaleDateString("pt-BR")}</p>
-					</div>
-
-					<div>
-						<h3 className="text-gray-500 font-medium">Última Atualização</h3>
-						<p className="text-lg">{new Date(produto.updatedAt).toLocaleDateString("pt-BR")}</p>
-					</div> */}
 				</div>
 			</div>
 		</Container>

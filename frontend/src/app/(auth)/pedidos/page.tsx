@@ -1,11 +1,11 @@
 import { pedidoService } from "@/services/pedidosService"
-import Container from "@/components/layout/container"
-import ListaPedidos from "@/components/pedidos/lista-pedidos"
-import HeaderPage from "@/components/templates/header-page"
 import { ordemCompraService } from "@/services/ordensCompraService"
 import { produtoService } from "@/services/produtosService"
 import { usuarioService } from "@/services/usuariosService"
 import { supermercadoService } from "@/services/supermercadosService"
+import Container from "@/components/layout/container"
+import HeaderPage from "@/components/templates/header-page"
+import ListaPedidos from "@/components/pedidos/lista-pedidos"
 
 export default async function PedidosPage() {
 	const pedidos = await pedidoService.obterTodos()
