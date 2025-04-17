@@ -1,6 +1,5 @@
 import Link from "next/link"
-import { IconCancel, IconEye, IconPencil } from "@tabler/icons-react"
-import { OrdemCompra } from "@core"
+import { IconEye, IconPencil, IconX } from "@tabler/icons-react"
 
 export interface BtnsGroupProps {
 	href: string
@@ -48,7 +47,7 @@ export default function BtnsGroup({ href, objeto, infoAdicional, onExcluir }: Bt
 					onClick={() => onExcluir(objeto.id)}
 					className="flex gap-1 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 border-2 border-red-600 rounded-md"
 				>
-					<IconCancel />
+					<IconX />
 					Excluir
 				</button>
 			)}

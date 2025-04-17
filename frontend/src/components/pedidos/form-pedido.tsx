@@ -4,25 +4,23 @@ import { useRouter } from "next/navigation"
 import { OrdemCompra, Pedido, Produto, Supermercado, Usuario } from "@core"
 import { GerarDatas, GerarIds } from "@/utils"
 import { pedidoService } from "@/services/pedidosService"
+import { produtoService } from "@/services/produtosService"
+import { usuarioService } from "@/services/usuariosService"
+import { ordemCompraService } from "@/services/ordensCompraService"
+import { supermercadoService } from "@/services/supermercadosService"
+import { IconCancel, IconCheck } from "@tabler/icons-react"
 
 export interface PedidoFormProps {
 	pedido?: Pedido
-	ordensCompra: OrdemCompra[]
-	produtos: Produto[]
-	usuarios: Usuario[]
-	supermercados: Supermercado[]
 	isEditing?: boolean
 }
 
-export default function PedidoForm({
-	pedido,
-	ordensCompra,
-	produtos,
-	usuarios,
-	supermercados,
-	isEditing = false,
-}: PedidoFormProps) {
+export default function PedidoForm({ pedido, isEditing = false }: PedidoFormProps) {
 	const router = useRouter()
+	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
+	const [produtos, setProdutos] = useState<Produto[]>([])
+	const [usuarios, setUsuarios] = useState<Usuario[]>([])
+	const [supermercados, setSupermercados] = useState<Supermercado[]>([])
 	const [formState, setFormState] = useState({
 		id: GerarIds.newId(),
 		ordemCompraId: "",
@@ -35,6 +33,46 @@ export default function PedidoForm({
 	const [error, setError] = useState("")
 
 	useEffect(() => {
+		async function carregarOrdensCompra() {
+			try {
+				const data = await ordemCompraService.obterTodas()
+				setOrdensCompra(data)
+			} catch (error) {
+				console.error("Erro ao carregar ordens de compra em form-pedido:", error)
+			}
+		}
+		carregarOrdensCompra()
+
+		async function carregarProdutos() {
+			try {
+				const data = await produtoService.obterTodos()
+				setProdutos(data)
+			} catch (error) {
+				console.error("Erro ao carregar produtos em form-pedido:", error)
+			}
+		}
+		carregarProdutos()
+
+		async function carregarUsuarios() {
+			try {
+				const data = await usuarioService.obterTodos()
+				setUsuarios(data)
+			} catch (error) {
+				console.error("Erro ao carregar usuários em form-pedido:", error)
+			}
+		}
+		carregarUsuarios()
+
+		async function carregarSupermercados() {
+			try {
+				const data = await supermercadoService.obterTodos()
+				setSupermercados(data)
+			} catch (error) {
+				console.error("Erro ao carregar usuários em form-pedido:", error)
+			}
+		}
+		carregarSupermercados()
+
 		if (pedido) {
 			setFormState({
 				id: pedido.id,
@@ -197,15 +235,17 @@ export default function PedidoForm({
 				<button
 					type="button"
 					onClick={() => router.back()}
-					className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+					className="flex gap-2 itens-center px-4 py-2 text-red-600 hover:bg-red-600 hover:text-white border-2 border-red-600 rounded-md"
 				>
+					<IconCancel/>
 					Cancelar
 				</button>
 				<button
 					type="submit"
 					disabled={isSubmitting}
-					className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+					className="flex gap-2 itens-center px-4 py-2 text-green-600 hover:bg-green-600 hover:text-white border-2 border-green-600 rounded-md disabled:bg-green-400"
 				>
+					<IconCheck/>
 					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
 				</button>
 			</div>

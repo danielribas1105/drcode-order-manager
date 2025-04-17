@@ -9,6 +9,7 @@ import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 import semImagem from "@/../public/images/no-image.jpg"
 import { ordemCompraService } from "@/services/ordensCompraService"
+import { IconCross, IconPencil, IconX } from "@tabler/icons-react"
 
 export default function DetalheProdutoPage() {
 	const params = useParams()
@@ -91,14 +92,16 @@ export default function DetalheProdutoPage() {
 			<HeaderPage titulo="Detalhes do Produto" textoBtn="Voltar para Lista" linkBtn="/produtos">
 				<Link
 					href={`/produtos/edit/${produto.id}`}
-					className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+					className="flex gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
+					<IconPencil/>
 					Editar
 				</Link>
 				<button
 					onClick={handleExcluir}
-					className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+					className="flex gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
 				>
+					<IconX/>
 					Excluir
 				</button>
 			</HeaderPage>
@@ -125,7 +128,7 @@ export default function DetalheProdutoPage() {
 						</div>
 						<div>
 							<h3 className="text-gray-500 font-medium">Peso</h3>
-							<p className="text-lg font-medium text-green-600">{produto.peso || ""}</p>
+							<p className="text-lg">{produto.peso || ""}</p>
 						</div>
 					</div>
 

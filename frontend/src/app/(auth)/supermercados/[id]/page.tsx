@@ -2,21 +2,34 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Supermercado } from "@core"
+import { Supermercado, Usuario } from "@core"
 import { supermercadoService } from "@/services/supermercadosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
+import { IconPencil, IconX } from "@tabler/icons-react"
+import { usuarioService } from "@/services/usuariosService"
 
 export default function DetalheSupermercadoPage() {
 	const params = useParams()
 	const router = useRouter()
 	const [supermercado, setSupermercado] = useState<Supermercado | null>(null)
+	const [usuarios, setUsuarios] = useState<Usuario[]>([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState("")
 
 	const id = Array.isArray(params.id) ? params.id[0] : params.id
 
 	useEffect(() => {
+		async function carregarUsuarios() {
+			try {
+				const data = await usuarioService.obterTodos()
+				setUsuarios(data)
+			} catch (error) {
+				console.error("Erro ao carregar usuarios em detalhe supermercado:", error)
+			}
+		}
+		carregarUsuarios()
+
 		async function carregarSupermercado(id: string) {
 			try {
 				const data = await supermercadoService.obterPorId(id)
@@ -33,6 +46,11 @@ export default function DetalheSupermercadoPage() {
 			carregarSupermercado(id)
 		}
 	}, [id])
+
+	function findUsuario(id: string): string {
+		const usuario = usuarios.find((u) => u.id === id)
+		return usuario ? usuario.nome : "Usuário não encontrado"
+	}
 
 	const handleExcluir = async () => {
 		if (!supermercado) return
@@ -71,14 +89,16 @@ export default function DetalheSupermercadoPage() {
 			>
 				<Link
 					href={`/supermercados/edit/${supermercado.id}`}
-					className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+					className="flex gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
+					<IconPencil />
 					Editar
 				</Link>
 				<button
 					onClick={handleExcluir}
-					className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+					className="flex gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
 				>
+					<IconX />
 					Excluir
 				</button>
 			</HeaderPage>
@@ -97,7 +117,7 @@ export default function DetalheSupermercadoPage() {
 
 					<div>
 						<h3 className="text-gray-500 font-medium">Comprador</h3>
-						<p className="text-lg font-medium text-green-600">{supermercado.usuarioId}</p>
+						<p className="text-lg">{findUsuario(supermercado.usuarioId)}</p>
 					</div>
 
 					<div className="md:col-span-2">

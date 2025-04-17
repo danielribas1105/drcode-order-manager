@@ -148,7 +148,7 @@ export default function ProdutoForm({ produto, isEditing = false }: ProdutoFormP
 				<button
 					type="submit"
 					disabled={isSubmitting}
-					className="flex gap-2 itens-center px-4 py-2 text-green-600 hover:bg-green-600 hover:text-white border-2 border-green-600 rounded-md disabled:bg-blue-400"
+					className="flex gap-2 itens-center px-4 py-2 text-green-600 hover:bg-green-600 hover:text-white border-2 border-green-600 rounded-md disabled:bg-green-400"
 				>
 					<IconCheck />
 					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}

@@ -12,7 +12,6 @@ export default function SupermercadosPage() {
 
 	useEffect(() => {
 		async function carregarSupermercados() {
-			console.log("carregarOrdensCompra")
 			try {
 				const data = await supermercadoService.obterTodos()
 				setSupermercados(data)

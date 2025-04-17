@@ -8,6 +8,7 @@ import { usuarioService } from "@/services/usuariosService"
 import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 import semImagem from "@/../public/images/img-user.png"
+import { IconPencil, IconX } from "@tabler/icons-react"
 
 export default function DetalheUsuarioPage() {
 	const params = useParams()
@@ -69,14 +70,16 @@ export default function DetalheUsuarioPage() {
 			<HeaderPage titulo="Detalhes do Usuário" textoBtn="Voltar para Lista" linkBtn="/usuarios">
 				<Link
 					href={`/usuarios/edit/${usuario.id}`}
-					className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+					className="flex gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
+					<IconPencil />
 					Editar
 				</Link>
 				<button
 					onClick={handleExcluir}
-					className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+					className="flex gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
 				>
+					<IconX />
 					Excluir
 				</button>
 			</HeaderPage>
@@ -103,13 +106,19 @@ export default function DetalheUsuarioPage() {
 						</div>
 						<div>
 							<h3 className="text-gray-500 font-medium">CPF</h3>
-							<p className="text-lg font-medium text-green-600">{usuario.cpf}</p>
+							<p className="text-lg">{usuario.cpf}</p>
 						</div>
 					</div>
 
-					<div className="md:col-span-2">
-						<h3 className="text-gray-500 font-medium">Status</h3>
-						<p className="text-lg">{usuario.status}</p>
+					<div className="flex gap-10">
+						<div>
+							<h3 className="text-gray-500 font-medium">Perfil</h3>
+							<p className="text-lg">{usuario.perfil}</p>
+						</div>
+						<div>
+							<h3 className="text-gray-500 font-medium">Status</h3>
+							<p className="text-lg">{usuario.status}</p>
+						</div>
 					</div>
 				</div>
 			</div>

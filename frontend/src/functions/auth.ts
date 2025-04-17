@@ -1,7 +1,9 @@
 import { SignupFormSchema, FormState } from "@/libs/definitions"
-import listaUsuarios from "@/data/constants/usuarios"
+import { usuarioService } from "@/services/usuariosService"
 
 export async function signup(state: FormState, formData: FormData) {
+	const listaUsuarios = await usuarioService.obterTodos()
+
 	// Validate form fields
 	const validatedFields = SignupFormSchema.safeParse({
 		//nome: formData.get('nome'),

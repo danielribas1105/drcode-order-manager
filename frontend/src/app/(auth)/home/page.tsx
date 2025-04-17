@@ -8,12 +8,14 @@ import {
 	IconShoppingCart,
 	IconUsers,
 } from "@tabler/icons-react"
-import { Usuario } from "@core"
+import { OrdemCompra, Usuario } from "@core"
+import { ordemCompraService } from "@/services/ordensCompraService"
 import CardHome from "@/components/templates/card-home"
 import Container from "@/components/layout/container"
 
 export default function Home() {
 	const [usuarioAtual, setUsuarioAtual] = useState<Partial<Usuario> | null>(null)
+	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -22,6 +24,18 @@ export default function Home() {
 				setUsuarioAtual(JSON.parse(usuarioSalvo)) // Converte de JSON para objeto
 			}
 		}
+
+		async function carregarOrdensCompra() {
+			try {
+				const data = await ordemCompraService.obterTodas()
+				setOrdensCompra(data)
+			} catch (error) {
+				console.error("Erro ao carregar ordens de compra na página home:", error)
+			} /* finally {
+				setLoading(false)
+			} */
+		}
+		carregarOrdensCompra()
 	}, [])
 
 	return (
@@ -34,6 +48,8 @@ export default function Home() {
 					link={"/ordensCompra"}
 					titulo={"ORDENS DE COMPRA"}
 					descricao={"Cadastrar e gerenciar as ordens de compras."}
+					infoAdd={ordensCompra.length}
+					useInfoAdd={true}
 					icon={IconEdit}
 				/>
 				<CardHome

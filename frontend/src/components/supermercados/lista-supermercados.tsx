@@ -21,7 +21,7 @@ export default function ListaSupermercados({ supermercados, onExcluir }: ListaSu
                                         <span className="py-3 px-4">{supermercado.status}</span>
                                     </div>
                                 </div>
-                                <BtnsGroup href="supermercados" objeto={supermercado.id} onExcluir={onExcluir}/>
+                                <BtnsGroup href="supermercados" objeto={supermercado} onExcluir={onExcluir}/>
                             </li>
                         ))
                     ) : (

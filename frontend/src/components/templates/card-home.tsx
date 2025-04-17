@@ -8,6 +8,8 @@ export interface CardProps {
 	titulo: string
 	descricao: string
 	usuario?: Partial<Usuario>
+	infoAdd?: number
+	useInfoAdd?: boolean
 	icon: ElementType
 }
 
@@ -20,6 +22,12 @@ export default function CardHome(props: CardProps) {
 					<props.icon size={40} color="#f88a1a" />
 				</div>
 				<div className="text-sm">{props.descricao}</div>
+				{props.useInfoAdd ? (
+					<div className="flex gap-2 mt-4 font-semibold">
+						<div className="text-zinc-600">Total de OCs:</div>
+						<div className="text-emerald-500">{props.infoAdd}</div>
+					</div>
+				) : ("")}
 			</div>
 		</Link>
 	)

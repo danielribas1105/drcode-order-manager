@@ -17,7 +17,7 @@ export default async function PedidosPage() {
 	return (
 		<Container className="flex-col">
 			<HeaderPage
-				titulo="Pedidos Cadastradas"
+				titulo="Pedidos Cadastrados"
 				textofiltro={"Pesquisar Pedidos"}
 				textoBtn="Adicionar Pedido"
 				linkBtn="/pedidos/add"
