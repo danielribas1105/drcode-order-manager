@@ -1,42 +1,47 @@
-import { produtoService } from "@/services/produtosService"
+"use client"
 import Container from "@/components/layout/container"
-import HeaderPage from "@/components/templates/header-page"
 import ListaProdutos from "@/components/produtos/lista-produtos"
+import HeaderPage from "@/components/templates/header-page"
 import { ordemCompraService } from "@/services/ordensCompraService"
+import { produtoService } from "@/services/produtosService"
+import { OrdemCompra, Produto } from "@core"
+import { useEffect, useState } from "react"
 
-export default async function ProdutosPage() {
-	const produtos = await produtoService.obterTodos()
-	const ordensCompra = await ordemCompraService.obterTodas()
-	/* const [produtos, setProdutos] = useState<Produto[]>([])
-	const [loading, setLoading] = useState(true) */
+export default function ProdutosPage() {
+	const [produtos, setProdutos] = useState<Produto[]>([])
+	const [ordensCompra, setOrdensCompra] = useState<OrdemCompra[]>([])
+	const [loading, setLoading] = useState(true)
 
-	/* useEffect(() => {
-		async function carregarProdutos() {
-			console.log("carregarProdutos")
+	useEffect(() => {
+		async function carregarDados() {
 			try {
-				const data = await produtoService.obterTodos()
-				setProdutos(data)
+				const [produtosRes, ordensRes] = await Promise.all([
+					produtoService.obterTodos(),
+					ordemCompraService.obterTodas(),
+				])
+				setProdutos(produtosRes)
+				setOrdensCompra(ordensRes)
 			} catch (error) {
-				console.error("Erro ao carregar produtos:", error)
+				console.error("Erro ao carregar dados:", error)
 			} finally {
 				setLoading(false)
 			}
 		}
 
-		carregarProdutos()
-	}, []) */
+		carregarDados()
+	}, [])
 
-	//if (loading) return <div>Carregando...</div>
+	if (loading) return <div className="text-center p-4">Carregando...</div>
 
 	return (
 		<Container className="flex-col">
 			<HeaderPage
 				titulo="Produtos Cadastrados"
-				textofiltro={"Pesquisar produto"}
+				textofiltro="Pesquisar produto"
 				textoBtn="Adicionar Produto"
 				linkBtn="/produtos/add"
 			/>
-			<ListaProdutos produtos={produtos} ordensCompra={ordensCompra} />
+			<ListaProdutos produtos={produtos} setProdutos={setProdutos} ordensCompra={ordensCompra} />
 		</Container>
 	)
 }

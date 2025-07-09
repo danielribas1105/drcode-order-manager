@@ -8,7 +8,6 @@ export default function Login() {
 		<div className="flex flex-col gap-1 items-center py-10 h-screen">
 			<Image src={logo} alt={"Logo Order Manager"} width={300} height={300} />
 			<SignupForm />
-			<Link href="/home">Entrar</Link>
 		</div>
 	)
 }

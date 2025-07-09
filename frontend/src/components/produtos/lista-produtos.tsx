@@ -1,22 +1,19 @@
 "use client"
-import Image from "next/image"
-import { useEffect, useState } from "react"
-import { OrdemCompra, Produto } from "@core"
-import { produtoService } from "@/services/produtosService"
-import BtnsGroup from "../templates/btns-group"
 import semImagem from "@/../public/images/no-image.jpg"
+import { produtoService } from "@/services/produtosService"
+import { OrdemCompra, Produto } from "@core"
+import Image from "next/image"
+import BtnsGroup from "../templates/btns-group"
 
 export interface ListaProdutosProps {
 	produtos: Produto[]
+	setProdutos: (produtos: Produto[]) => void
 	ordensCompra: OrdemCompra[]
 }
 
-export default function ListaProdutos({ produtos: initialProdutos, ordensCompra }: ListaProdutosProps) {
-	const [produtos, setProdutos] = useState<Produto[]>(initialProdutos)
-
+export default function ListaProdutos({ produtos, setProdutos, ordensCompra }: ListaProdutosProps) {
 	function hasOrdensCompra(id: string): boolean {
-		const ocs = ordensCompra.filter((oc) => oc.produtoId === id)
-		return ocs.length > 0 ? true : false
+		return ordensCompra.some((oc) => oc.produtoId === id)
 	}
 
 	const handleExcluir = async (id: string) => {
@@ -34,11 +31,6 @@ export default function ListaProdutos({ produtos: initialProdutos, ordensCompra 
 		}
 	}
 
-	// Atualiza o estado local se as props mudarem
-	useEffect(() => {
-		setProdutos(initialProdutos)
-	}, [initialProdutos])
-
 	return (
 		<ul className="flex flex-col gap-2">
 			{produtos.length > 0 ? (
@@ -53,7 +45,7 @@ export default function ListaProdutos({ produtos: initialProdutos, ordensCompra 
 									src={!produto.imagemUrl ? semImagem : produto.imagemUrl}
 									fill
 									className="object-contain"
-									alt={`Foto de perfil ${produto.nome}`}
+									alt={`Foto do produto ${produto.nome}`}
 								/>
 							</div>
 							<div>
