@@ -38,7 +38,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 
 		if (supermercado) {
 			setFormState({
-				id: supermercado.id,
+				id: supermercado.id || "",
 				razaoSocial: supermercado.razaoSocial || "",
 				cnpj: supermercado.cnpj || "",
 				usuarioId: supermercado.usuarioId || "",
@@ -63,7 +63,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 		setError("")
 
 		try {
-			if (isEditing && supermercado) {
+			if (isEditing && supermercado?.id) {
 				await supermercadoService.atualizar(supermercado.id, formState)
 			} else {
 				await supermercadoService.criar(formState)
@@ -167,7 +167,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 					onClick={() => router.back()}
 					className="flex gap-2 itens-center px-4 py-2 text-red-600 hover:bg-red-600 hover:text-white border-2 border-red-600 rounded-md"
 				>
-					<IconCancel/>
+					<IconCancel />
 					Cancelar
 				</button>
 				<button
@@ -175,7 +175,7 @@ export default function SupermercadoForm({ supermercado, isEditing = false }: Su
 					disabled={isSubmitting}
 					className="flex gap-2 itens-center px-4 py-2 text-green-600 hover:bg-green-600 hover:text-white border-2 border-green-600 rounded-md disabled:bg-green-400"
 				>
-					<IconCheck/>
+					<IconCheck />
 					{isSubmitting ? "Salvando..." : isEditing ? "Atualizar" : "Salvar"}
 				</button>
 			</div>
