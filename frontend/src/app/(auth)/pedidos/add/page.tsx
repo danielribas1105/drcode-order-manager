@@ -15,12 +15,7 @@ export default async function NovoPedidoPage() {
 	return (
 		<Container className="flex-col">
 			<HeaderPage titulo="Cadastrar Novo Pedido" textoBtn="Voltar para Lista" linkBtn="/pedidos" />
-			<PedidoForm 
-				ordensCompra={ordensCompra}
-				produtos={produtos}
-				usuarios={usuarios}
-				supermercados={supermercados}
-			/>
+			<PedidoForm />
 		</Container>
 	)
 }
