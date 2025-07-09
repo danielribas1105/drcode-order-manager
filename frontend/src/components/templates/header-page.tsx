@@ -48,8 +48,15 @@ export default function HeaderPage({ titulo, textoBtn, linkBtn, textofiltro, chi
 					</Link>
 				)}
 				<Link
+					href={`/pedidos/add`}
+					className="flex gap-2 text-white bg-amber-600 hover:bg-amber-700 py-2 px-4 rounded-lg"
+				>
+					<IconPlus />
+					Pedido
+				</Link>
+				<Link
 					href="/home"
-					className="flex gap-2 items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+					className="flex gap-2 items-center bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
 				>
 					<IconHome />
 					Home
