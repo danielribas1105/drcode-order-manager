@@ -41,7 +41,7 @@ export default function ProdutosPage() {
 				textoBtn="Adicionar Produto"
 				linkBtn="/produtos/add"
 			/>
-			<ListaProdutos produtos={produtos} setProdutos={setProdutos} ordensCompra={ordensCompra} />
+			<ListaProdutos produtos={produtos} ordensCompra={ordensCompra} setProdutos={setProdutos} />
 		</Container>
 	)
 }

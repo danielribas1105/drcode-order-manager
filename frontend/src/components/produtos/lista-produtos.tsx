@@ -1,17 +1,16 @@
-"use client"
 import semImagem from "@/../public/images/no-image.jpg"
 import { produtoService } from "@/services/produtosService"
 import { OrdemCompra, Produto } from "@core"
 import Image from "next/image"
 import BtnsGroup from "../templates/btns-group"
 
-export interface ListaProdutosProps {
+interface ListaProdutosProps {
 	produtos: Produto[]
-	setProdutos: (produtos: Produto[]) => void
 	ordensCompra: OrdemCompra[]
+	setProdutos: (produtos: Produto[]) => void
 }
 
-export default function ListaProdutos({ produtos, setProdutos, ordensCompra }: ListaProdutosProps) {
+export default function ListaProdutos({ produtos, ordensCompra, setProdutos }: ListaProdutosProps) {
 	function hasOrdensCompra(id: string): boolean {
 		return ordensCompra.some((oc) => oc.produtoId === id)
 	}

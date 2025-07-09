@@ -1,40 +1,35 @@
 "use client"
-import { useEffect, useState } from "react"
-import { Supermercado } from "@core"
-import { supermercadoService } from "@/services/supermercadosService"
 import Container from "@/components/layout/container"
-import HeaderPage from "@/components/templates/header-page"
 import ListaSupermercados from "@/components/supermercados/lista-supermercados"
+import HeaderPage from "@/components/templates/header-page"
+import { pedidoService } from "@/services/pedidosService"
+import { supermercadoService } from "@/services/supermercadosService"
+import { Pedido, Supermercado } from "@core"
+import { useEffect, useState } from "react"
 
 export default function SupermercadosPage() {
 	const [supermercados, setSupermercados] = useState<Supermercado[]>([])
+	const [pedidos, setPedidos] = useState<Pedido[]>([])
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		async function carregarSupermercados() {
+		async function carregarDados() {
 			try {
-				const data = await supermercadoService.obterTodos()
-				setSupermercados(data)
+				const [supermercadosRes, pedidosRes] = await Promise.all([
+					supermercadoService.obterTodos(),
+					pedidoService.obterTodos(),
+				])
+				setSupermercados(supermercadosRes)
+				setPedidos(pedidosRes)
 			} catch (error) {
-				console.error("Erro ao carregar supermercados:", error)
+				console.error("Erro ao carregar dados:", error)
 			} finally {
 				setLoading(false)
 			}
 		}
 
-		carregarSupermercados()
+		carregarDados()
 	}, [])
-
-	const handleExcluir = async (id: string) => {
-		if (confirm("Tem certeza que deseja excluir este supermercado?")) {
-			try {
-				await supermercadoService.excluir(id)
-				setSupermercados(supermercados.filter((supermercado) => supermercado.id !== id))
-			} catch (error) {
-				console.error("Erro ao excluir supermercado:", error)
-			}
-		}
-	}
 
 	if (loading) return <div>Carregando...</div>
 
@@ -46,7 +41,11 @@ export default function SupermercadosPage() {
 				textoBtn="Adicionar Supermercado"
 				linkBtn="/supermercados/add"
 			/>
-			<ListaSupermercados supermercados={supermercados} onExcluir={handleExcluir}/>
+			<ListaSupermercados
+				supermercados={supermercados}
+				pedidos={pedidos}
+				setSupermercados={setSupermercados}
+			/>
 		</Container>
 	)
 }
