@@ -9,7 +9,7 @@ import Container from "@/components/layout/container"
 import HeaderPage from "@/components/templates/header-page"
 import semImagem from "@/../public/images/no-image.jpg"
 import { ordemCompraService } from "@/services/ordensCompraService"
-import { IconCross, IconPencil, IconX } from "@tabler/icons-react"
+import { IconPencil, IconX } from "@tabler/icons-react"
 
 export default function DetalheProdutoPage() {
 	const params = useParams()
@@ -94,14 +94,14 @@ export default function DetalheProdutoPage() {
 					href={`/produtos/edit/${produto.id}`}
 					className="flex gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
 				>
-					<IconPencil/>
+					<IconPencil />
 					Editar
 				</Link>
 				<button
 					onClick={handleExcluir}
 					className="flex gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
 				>
-					<IconX/>
+					<IconX />
 					Excluir
 				</button>
 			</HeaderPage>
