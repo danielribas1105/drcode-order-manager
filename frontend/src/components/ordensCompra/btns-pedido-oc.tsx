@@ -1,8 +1,6 @@
 import Link from "next/link"
 import { IconDashboard, IconPlus } from "@tabler/icons-react"
 
-export interface BtnsPedidoOcProps {}
-
 export default function BtnsPedidoOc() {
 	return (
 		<div className="py-3 pr-2 flex items-center gap-2">
