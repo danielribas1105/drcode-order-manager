@@ -1,15 +1,49 @@
-import Image from "next/image"
-import { Usuario } from "@core"
-import BtnsGroup from "../templates/btns-group"
 import semImagem from "@/../public/images/img-user.png"
-
+import { usuarioService } from "@/services/usuariosService"
+import { OrdemCompra, Pedido, Supermercado, Usuario } from "@core"
+import Image from "next/image"
+import BtnsGroup from "../templates/btns-group"
 
 export interface ListaUsuariosProps {
 	usuarios: Usuario[]
-	onExcluir?: (id: string) => void
+	pedidos: Pedido[]
+	supermercados: Supermercado[]
+	ordensCompra: OrdemCompra[]
+	setUsuarios: (usuarios: Usuario[]) => void
 }
 
-export default function ListaUsuarios({ usuarios, onExcluir }: ListaUsuariosProps) {
+export default function ListaUsuarios({
+	usuarios,
+	pedidos,
+	supermercados,
+	ordensCompra,
+	setUsuarios,
+}: ListaUsuariosProps) {
+	function hasPedido(id: string): boolean {
+		return pedidos.some((pedido) => pedido.usuarioId === id)
+	}
+	function hasSupermercado(id: string): boolean {
+		return supermercados.some((supermercado) => supermercado.usuarioId === id)
+	}
+	function hasOrdemCompra(id: string): boolean {
+		return ordensCompra.some((oc) => oc.usuarioId === id)
+	}
+
+	const handleExcluir = async (id: string) => {
+		if (hasPedido(id) || hasSupermercado(id) || hasOrdemCompra(id)) {
+			alert("Usuário não pode ser excluído, pois, existem dados associados a esse.")
+			return
+		}
+		if (confirm("Tem certeza que deseja excluir este usuário?")) {
+			try {
+				await usuarioService.excluir(id)
+				setUsuarios(usuarios.filter((usuario) => usuario.id !== id))
+			} catch (error) {
+				console.error("Erro ao excluir usuário:", error)
+			}
+		}
+	}
+
 	return (
 		<ul className="flex flex-col gap-2">
 			{usuarios.length > 0 ? (
@@ -36,7 +70,7 @@ export default function ListaUsuarios({ usuarios, onExcluir }: ListaUsuariosProp
 								</div>
 							</div>
 						</div>
-						<BtnsGroup href="usuarios" objeto={usuario} onExcluir={onExcluir} />
+						<BtnsGroup href="usuarios" objeto={usuario} onExcluir={handleExcluir} />
 					</li>
 				))
 			) : (
