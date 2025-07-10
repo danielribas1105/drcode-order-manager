@@ -1,4 +1,3 @@
-"use client"
 import { useState, useEffect } from "react"
 import { OrdemCompra, Pedido, Produto, Supermercado, Usuario } from "@core"
 import { pedidoService } from "@/services/pedidosService"
@@ -10,17 +9,17 @@ export interface ListaPedidosProps {
 	produtos: Produto[]
 	usuarios: Usuario[]
 	supermercados: Supermercado[]
+	setPedidos: (pedidos: Pedido[]) => void
 }
 
 export default function ListaPedidos({
-	pedidos: initialPedidos,
+	pedidos,
 	ordensCompra,
 	produtos,
 	usuarios,
 	supermercados,
+	setPedidos,
 }: ListaPedidosProps) {
-	const [pedidos, setPedidos] = useState<Pedido[]>(initialPedidos)
-
 	const handleExcluir = async (id: string) => {
 		if (confirm("Tem certeza que deseja excluir este pedido?")) {
 			try {
@@ -50,11 +49,6 @@ export default function ListaPedidos({
 		const usuario = usuarios.find((usuario) => usuario.id === id)
 		return usuario ? usuario.nome : "Usuário não encontrado"
 	}
-
-	// Atualiza o estado local se as props mudarem
-	useEffect(() => {
-		setPedidos(initialPedidos)
-	}, [initialPedidos])
 
 	return (
 		<ul className="flex flex-col gap-2">
